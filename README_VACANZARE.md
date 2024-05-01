@@ -11,3 +11,4 @@
 7. ```npm run dev``` o ```npm run build``` in produzione per far partire VITE https://laravel.com/docs/11.x/vite#running-vite
 8. ```php artisan install:broadcasting``` per installare Reverbe
 9. ```php artisan reverb:start``` per far partire Reverbe
+10. ```php artisan db:seed``` Aggiunti i personaggi come utenti
