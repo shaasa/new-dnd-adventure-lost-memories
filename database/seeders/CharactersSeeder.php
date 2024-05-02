@@ -13,6 +13,13 @@ class CharactersSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
+
+                                       'name' => 'Beatrice',
+                                       'email' => 'info@beatriceweb.it',
+                                       'password' => bcrypt('silvestro1'),
+                                       'is_admin' => true,
+                                   ]);
+        DB::table('users')->insert([
                                        [
                                            'name' => 'Lucian',
                                            'email' => 'lucian@beatriceweb.com',
