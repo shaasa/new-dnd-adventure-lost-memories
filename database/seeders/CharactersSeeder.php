@@ -21,12 +21,6 @@ class CharactersSeeder extends Seeder
                                    ]);
         DB::table('users')->insert([
                                        [
-                                           'name' => 'Beatrice',
-                                           'email' => 'info@beatriceweb.it',
-                                           'password' => bcrypt('silvestro1'),
-                                           'is_admin' => true,
-                                       ],
-                                       [
                                            'name' => 'Lucian',
                                            'email' => 'lucian@beatriceweb.com',
                                            'password' => bcrypt('ded')
