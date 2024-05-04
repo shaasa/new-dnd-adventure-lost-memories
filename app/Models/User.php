@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -43,14 +44,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_admin'
+        'race',
+        'level',
+        'class',
+        'alignment',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -66,9 +65,20 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function players(): HasMany
+    {
+        return $this->hasMany(Player::class);
+    }
+
+    public function shows(): HasMany
+    {
+        return $this->hasMany(Show::class);
+    }
 
     public function isAdmin(): bool
     {
         return $this->is_admin;
     }
+
+
 }
