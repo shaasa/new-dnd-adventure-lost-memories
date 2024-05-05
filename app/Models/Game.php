@@ -11,7 +11,7 @@ class Game extends Model
     use HasFactory;
 
     protected $table = 'games';
-    protected $fillable = ['players_count'];
+    protected $fillable = ['players_count', 'status', 'name'];
 
     public function players(): HasMany
     {
