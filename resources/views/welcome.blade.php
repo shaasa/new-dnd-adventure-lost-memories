@@ -72,12 +72,15 @@
 
                         <div class="pt-3 sm:pt-5">
                             <h2 class="text-xl font-semibold text-black dark:text-white">Partite aperte</h2>
-
+                            @if(count($totOpenGames) === 0)
                             <p class="mt-4 text-sm/relaxed">
-                                Laracasts offers thousands of video tutorials on Laravel, PHP, and JavaScript
-                                development. Check them out, see for yourself, and massively level up your development
-                                skills in the process.
+                                Non sono presenti partite aperte
                             </p>
+                            @else
+                                @foreach($totOpenGames as $games)
+
+                                @endforeach
+                            @endif
                         </div>
 
 

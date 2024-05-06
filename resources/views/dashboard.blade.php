@@ -1,6 +1,9 @@
 @php
-    $user = auth()->user();
+    use App\Domains\Games\Query\GamesQueryBuilder;$user = auth()->user();
     $isAdmin = $user->is_admin;
+    if($isAdmin){
+        $games = app(GamesQueryBuilder::class)->getGamesListWithPlayersNumber()->get();
+    }
     function getIconStatus($status): string
     {
         return match ($status) {
@@ -24,7 +27,9 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Dashboard') }} @if($isAdmin)
+                Admin
+            @endif
         </h2>
     </x-slot>
 
@@ -33,43 +38,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4">
                     @if($isAdmin)
-                        <script>
-                            <script>
-                                function editGame(game) {
-                                this.formData = game; //Assumendo che 'game' sia l'oggetto partita che vuoi modificare
-                                this.isEdit = true;
-                                this.formTitle = 'Modifica partita';
-                                this.submitButtonText = 'Modifica';
-                            }
 
-                                function submitForm() {
-                                //Qui invia i dati formData al server usando isEdit per decidere se eseguire un'operazione di inserimento o di modifica
-                            }
-                        </script>
-
-                        </script>
-                        <div x-data="{ isModalOpen: false }" x-cloak>
-                            <!-- Some other HTML -->
-                            <div x-show="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
-                                <div class="bg-white rounded-lg">
-                                    <!-- Modal Content -->
-                                    <h3>Modalità Modifica</h3>
-                                    <form method="POST" action="/update-game" class="p-4">
-                                        @csrf
-                                        @method('PUT')
-
-                                        <!-- Add your form fields here, for instance -->
-                                        <div>
-                                            <label for="name">Nome Gioco:</label>
-                                            <input type="text" id="name" name="name">
-                                        </div>
-
-                                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Conferma</button>
-                                        <button @click="isModalOpen = false" type="button" class="px-4 py-2 bg-red-500 text-white rounded">Chiudi</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
                         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                             Partite
                         </h2>
@@ -106,29 +75,31 @@
                             </h2>
 
                         @endif
-                        <form method="POST" action="/game/insert" class="space-y-4 dark"  >
-                            @csrf
-
-                            <label class="dark:text-white" for="name">Nome:</label>
-                            <input class="block w-full my-2 dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                                   type="text" id="name" name="name">
-
-                            <label class="dark:text-white" for="players">Numero di Giocatori:</label>
-                            <input class="block w-full my-2 dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                                   type="number" id="players_count" name="players_count">
-
-                            <label class="dark:text-white" for="status">Stato:</label>
-                            <select class="block w-full my-2 dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                                    id="status" name="status">
-                                <option value="ongoing">In corso</option>
-                                <option value="suspended">In sospeso</option>
-                                <option value="finished">Conclusa</option>
-                            </select>
-
-                            <button class="px-4 py-2 bg-blue-500 text-white rounded dark:bg-gray-800" type="submit">
-                                Crea
-                            </button>
-                        </form>
+                        <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">
+                            <form action="/games" method="post">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="name" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Nome Gioco</label>
+                                    <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="name" name="name" placeholder="Inserisci il nome del gioco" required>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="players_count" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Numero di Giocatori</label>
+                                    <input type="number" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="players_count" name="players_count" placeholder="Inserisci il numero di giocatori" required>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label for="state" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Stato</label>
+                                    <select id="state" name="state" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" required>
+                                        <option value="">Seleziona uno stato</option>
+                                        <option value="ongoing">In corso</option>
+                                        <option value="finished">Terminata</option>
+                                        <option value="suspended">Sospesa</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn mt-4 inline-flex items-center justify-center px-5 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-black bg-blue-400 hover:bg-blue-300 focus:outline-none focus:border-blue-500 focus:shadow-outline-blue active:bg-blue-500 transition duration-150 ease-in-out">
+                                    Crea
+                                </button>
+                            </form>
+                        </div>
                     @else
                         Non sei amministratore
                     @endif

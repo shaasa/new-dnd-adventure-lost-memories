@@ -17,7 +17,14 @@
 12. ```php artisan reverb:start``` per far partire Reverbe
 
 ##Parametri discord
-
+```
 DISCORD_API_BOT_TOKEN=MTIzNTcwMjU1MTIyMzk5MjM5Mg.GccaCL.8vuABaVlwLU81GBI_Ni0JQ_7wRLrecPL1U5S8k
 DISCORD_APPLICATION_ID=1235702551223992392
 DISCORD_PUBLIC_KEY=f06d2752800024aa7d44ba00815c9a47f995cf0f3b8fc50eef9767862dffd63d
+```
+
+## Installare RAY
+
+```composer require spatie/laravel-ray --dev```
+
+```php artisan ray:publish-config```

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('games', function (Blueprint $table) {
-            $table->enum('status', ['ongoing', 'finished', 'suspended'])->default('ongoing');
+            $table->enum('status', ['ongoing', 'finished', 'suspended'])->default('ongoing')->after('players_count');
         });
     }
 
