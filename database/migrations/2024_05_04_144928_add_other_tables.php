@@ -15,10 +15,10 @@ return new class extends Migration
     {
 
         Schema::table('users', function (Blueprint $table) {
-            $table->string('race')->nullable();
-            $table->string('class')->nullable();
-            $table->integer('level')->nullable();
-            $table->string('alignment')->nullable();
+            $table->string('race')->nullable()->after('password');
+            $table->string('class')->nullable()->after('password');
+            $table->integer('level')->default(1)->after('password');
+            $table->string('alignment')->default('CG')->after('password');
         });
 
         Schema::create('games', function (Blueprint $table) {

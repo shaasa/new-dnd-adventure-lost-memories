@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -63,7 +63,8 @@
                         </div>
                     </div>
 
-                    <div class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
+                    <div
+                        class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
                         <div
                             class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
                             <x-fas-dice-d20 class="size-5 sm:size-6" style="color: #FF2D20"/>
@@ -73,13 +74,34 @@
                         <div class="pt-3 sm:pt-5">
                             <h2 class="text-xl font-semibold text-black dark:text-white">Partite aperte</h2>
                             @if(count($totOpenGames) === 0)
-                            <p class="mt-4 text-sm/relaxed">
-                                Non sono presenti partite aperte
-                            </p>
+                                <p class="mt-4 text-sm/relaxed">
+                                    Non sono presenti partite aperte
+                                </p>
                             @else
-                                @foreach($totOpenGames as $games)
+                                <div class="mt-6">
+                                    <table class="table-auto w-full mb-6 text-gray-300 dark:bg-gray-800">
+                                        <thead class="bg-gray-900 text-white">
+                                        <tr>
+                                            <th class="border px-4 py-2">Nome</th>
+                                            <th class="border px-4 py-2">Numero di Giocatori</th>
+                                            <th class="border px-4 py-2">Giocatori registrati</th>
+                                            <th class="border px-4 py-2">Stato</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($totOpenGames as $game)
 
-                                @endforeach
+                                            <tr class="text-center bg-gray-700 hover:bg-gray-600">
+                                                <td class="border px-4 py-2">{{ $game->name }}</td>
+                                                <td class="border px-4 py-2">{{ $game->players_count }}</td>
+                                                <td class="border px-4 py-2">{{ $game->players_number }}</td>
+                                                <td class="border px-4 py-2"> {{ svg('fas-'.getIconStatus($game->status), 'size-5 sm:size-6', ['style'=>'color: '.getIconColor($game->status)]) }}</td>
+
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             @endif
                         </div>
 
@@ -89,8 +111,9 @@
                     <div
                         class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
                     >
-                        <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
-                            <x-fas-people-carry-box  class="size-5 sm:size-6" style="color: #FF2D20"/>
+                        <div
+                            class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
+                            <x-fas-people-carry-box class="size-5 sm:size-6" style="color: #FF2D20"/>
 
                         </div>
 
@@ -98,7 +121,8 @@
                             <h2 class="text-xl font-semibold text-black dark:text-white">Istruzioni</h2>
 
                             <p class="mt-4 text-sm/relaxed">
-                                Richiedi al master il tuo id personale e poi, entrando in una partita aperta, potrai registrarti e avere accesso alla tua area riservata.
+                                Richiedi al master il tuo id personale e poi, entrando in una partita aperta, potrai
+                                registrarti e avere accesso alla tua area riservata.
                             </p>
                         </div>
 
@@ -109,7 +133,7 @@
                         class="flex items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800">
                         <div
                             class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
-                            <x-fas-hand-spock   class="size-5 sm:size-6" style="color: #FF2D20"/>
+                            <x-fas-hand-spock class="size-5 sm:size-6" style="color: #FF2D20"/>
                         </div>
 
                         <div class="pt-3 sm:pt-5">

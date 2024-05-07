@@ -14,6 +14,7 @@ class CharactersSeeder extends Seeder
     {
         DB::table('users')->insert([
 
+                                        'id' => 1,
                                        'name' => 'Beatrice',
                                        'email' => 'info@beatriceweb.it',
                                        'password' => bcrypt('silvestro1'),
@@ -21,39 +22,81 @@ class CharactersSeeder extends Seeder
                                    ]);
         DB::table('users')->insert([
                                        [
+                                           'id' => 2,
                                            'name' => 'Lucian',
                                            'email' => 'lucian@beatriceweb.com',
-                                           'password' => bcrypt('ded')
+                                           'password' => bcrypt('ded'),
+                                           'race' => 'Elfo dei boschi',
+                                           'class' => 'Ranger',
+                                           'level' => 1,
+                                           'alignment' => 'CG',
+                                           'mandatory' => false,
                                        ],
                                        [
+                                           'id' => 3,
                                            'name' => 'Rhogar',
                                            'email' => 'rhogar@beatriceweb.com',
-                                           'password' => bcrypt('ded')
+                                           'password' => bcrypt('ded'),
+                                           'race' => 'Dragonide',
+                                           'class' => 'Paladino',
+                                           'level' => 1,
+                                           'alignment' => 'LN',
+                                           'mandatory' => false,
                                        ],
                                        [
+                                           'id' => 4,
                                            'name' => 'Reed',
                                            'email' => 'reed@beatriceweb.com',
-                                           'password' => bcrypt('ded')
+                                           'password' => bcrypt('ded'),
+                                           'race' => 'Halfling',
+                                           'class' => 'Ladro',
+                                           'level' => 1,
+                                           'alignment' => 'NN',
+                                           'mandatory' => false,
                                        ],
                                        [
+                                           'id' => 5,
                                            'name' => 'Panus',
                                            'email' => 'panus@beatriceweb.com',
-                                           'password' => bcrypt('ded')
+                                           'password' => bcrypt('ded'),
+                                           'race' => 'Elfo dei boschi',
+                                           'class' => 'Druido',
+                                           'level' => 1,
+                                           'alignment' => 'NG',
+                                           'mandatory' => false,
                                        ],
                                        [
+                                           'id' => 6,
                                            'name' => 'Alvyn',
                                            'email' => 'alvyn@beatriceweb.com',
-                                           'password' => bcrypt('ded')
+                                           'password' => bcrypt('ded'),
+                                           'race' => 'Gnomo delle rocce',
+                                           'class' => 'Mago',
+                                           'level' => 1,
+                                           'alignment' => 'CG',
+                                           'mandatory' => true,
                                        ],
                                        [
+                                           'id' => 7,
                                            'name' => 'Thokk',
                                            'email' => 'thokk@beatriceweb.com',
-                                           'password' => bcrypt('ded')
+                                           'password' => bcrypt('ded'),
+                                           'race' => 'Mezzorco',
+                                           'class' => 'Guerriero',
+                                           'level' => 1,
+                                           'alignment' => 'CN',
+                                           'mandatory' => true,
                                        ],
                                        [
+                                           'id' => 8,
                                            'name' => 'Delg',
                                            'email' => 'delg@beatriceweb.com',
-                                           'password' => bcrypt('ded')
+                                           'password' => bcrypt('ded'),
+                                           'race' => 'Nano delle montagne',
+                                           'class' => 'Chierico',
+                                           'level' => 1,
+                                           'alignment' => 'LG',
+                                           'mandatory' => true,
                                        ],
                                    ]);
     }
