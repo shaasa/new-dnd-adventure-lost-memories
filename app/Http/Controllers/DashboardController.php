@@ -19,7 +19,7 @@ class DashboardController extends Controller
     public function dashboard(): Application|Factory|\Illuminate\Foundation\Application|View
     {
         $games = app(GameQuery::class)->gamesListWithPlayersNumber()->get();
-        ray($games);
+
         return view('dashboard', compact('games'));
     }
 }

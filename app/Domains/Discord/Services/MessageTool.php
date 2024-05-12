@@ -16,22 +16,12 @@ class MessageTool extends Notification implements DiscordNotificationContract
     {
         return ['discord'];
     }
-
     public function toDiscord($notifiable): array
     {
-        $embedBuilder = new EmbedBuilder();
-        $embedBuilder->addAuthor('Me!');
-
-        $componentBuilder = new ComponentBuilder();
-        $componentBuilder->addActionButton('My Button', 'customId');
-
         return [
-            'contentType' => 'rich',
-            'channelId' => 'channel id',
-            'embeds' => $embedBuilder->getEmbeds(),
-            'components' => [
-                $componentBuilder->getActionRow(),
-            ],
+            'contentType' => 'plain',
+            'channelId' => 'channel ID',
+            'message' => 'message content',
         ];
     }
 }

@@ -18,7 +18,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4">
                     @if($isAdmin)
 
-                        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                          <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                             Partite
                         </h2>
                         @if($games === null || count($games)===0)
@@ -31,14 +31,13 @@
                                     <th class="border px-4 py-2">Numero di Giocatori</th>
                                     <th class="border px-4 py-2">Giocatori registrati</th>
                                     <th class="border px-4 py-2">Stato</th>
-                                    <th class="border px-4 py-2">Azioni</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($games as $game)
                                     <tr class="text-center bg-gray-700 hover:bg-gray-600">
                                         <td class="border px-4 py-2">
-                                            <a href="/admin/games/{{$game->id}}" class="text-red-500 underline">{{ $game->name }}</a>
+                                            <a href="/admin/game/{{$game->id}}" class="text-red-500 underline">{{ $game->name }}</a>
                                         </td>
                                         <td class="border px-4 py-2">{{ $game->players_count }}</td>
                                         <td class="border px-4 py-2">{{ $game->players_number }}</td>
@@ -54,7 +53,7 @@
 
                         @endif
                         <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">
-                            <form action="/games/insert" method="post">
+                            <form action="/admin/game/insert" method="post">
 
                                 @csrf
                                 <div class="form-group">

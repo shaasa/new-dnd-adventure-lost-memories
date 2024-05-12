@@ -31,7 +31,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('game_id')->constrained()->onDelete('cascade');
             $table->string('discord_name');
-            $table->string('discord_id');
+            $table->string('discord_id')->unique();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

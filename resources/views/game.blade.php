@@ -22,10 +22,11 @@
                             <th class="border px-4 py-2">Discord id</th>
                             <th class="border px-4 py-2">Discord name</th>
                             <th class="border px-4 py-2">Character</th>
+                            <th class="border px-4 py-2">Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($game->players() as $player)
+                        @foreach($game->players as $player)
                             <tr class="text-center bg-gray-700 hover:bg-gray-600">
                                 <td class="border px-4 py-2">
                                     <a href="/admin/player/{{$player->id}}"
@@ -33,7 +34,8 @@
                                 </td>
                                 <td class="border px-4 py-2">{{ $player->discord_id }}</td>
                                 <td class="border px-4 py-2">{{ $player->discord_name }}</td>
-                                <td class="border px-4 py-2">{{ $player->user()->name }}</td>
+                                <td class="border px-4 py-2">{{ $player->user->name }}</td>
+                                <td class="border px-4 py-2"><a href="{{route('player.delete', ['player_id' => $player->id])}}"> {{ svg('fas-trash-alt') }}</a></td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -44,9 +46,9 @@
                     </h2>
 
                     <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('player.insert') }}">
                             @csrf
-
+                            <input type="hidden" name="game_id" value="{{$game->id}}">
                             <div class="form-group">
                                 <label for="discord_id" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Discord ID</label>
                                 <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="discord_id" name="discord_id" value="{{ old('discord_id') }}" required>
@@ -74,7 +76,7 @@
 
 
                     <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">
-                        <form action="/games/update" method="post">
+                        <form action="{{route('game.update', ['game_id'=>$game->id])}}" method="post">
                             <input type="hidden" name="id" value="{{$game->id}}">
                             @csrf
                             <div class="form-group">
