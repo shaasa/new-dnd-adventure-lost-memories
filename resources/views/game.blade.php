@@ -35,7 +35,7 @@
                                 <td class="border px-4 py-2">{{ $player->discord_id }}</td>
                                 <td class="border px-4 py-2">{{ $player->discord_name }}</td>
                                 <td class="border px-4 py-2">{{ $player->user->name }}</td>
-                                <td class="border px-4 py-2"><a href="{{route('player.delete', ['player_id' => $player->id])}}"> {{ svg('fas-trash-alt') }}</a></td>
+                                <td class="border px-4 py-2 text-center"><a href="{{route('player.delete', ['player_id' => $player->id])}}"> {{ svg('fas-trash-alt', 'size-5 sm:size-6', ) }}</a></td>
                             </tr>
                         @endforeach
                         </tbody>
