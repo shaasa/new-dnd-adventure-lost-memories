@@ -19,6 +19,7 @@ class GetRandomCharacter
 
         // Cercare prima un utente con mandatory = 1
         $user = User::where('mandatory', 1)
+                    ->where('is_admin', 0)
                     ->whereDoesntHave('players', function (Builder $query) use ($game) {
                         $query->where('game_id', $game->id);
                     })
