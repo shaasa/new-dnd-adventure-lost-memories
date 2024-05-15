@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\URL;
 
 /**
  *
@@ -16,6 +18,8 @@ use Illuminate\Support\Carbon;
  * @property int $game_id
  * @property string $discord_name
  * @property string $discord_id
+ * @property string $discord_private_channel_id
+ * @property string $token
  * @property int $user_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -35,10 +39,10 @@ use Illuminate\Support\Carbon;
  */
 class Player extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table =  'players';
-    protected $fillable = ['name','discord_name', 'discord_id', 'user_id', 'game_id'];
+    protected $fillable = ['name','discord_name', 'discord_id', 'user_id', 'game_id', 'token', 'discord_private_channel_id'];
 
     public function user(): BelongsTo
     {
@@ -53,5 +57,14 @@ class Player extends Model
     public function players(): HasMany
     {
         return $this->hasMany(__CLASS__);
+    }
+
+    public function routeNotificationForDiscord(): string
+    {
+        return $this->discord_private_channel_id;
+    }
+
+    public function generateLoginLink(): string{
+        return URL::temporarySignedRoute('verify-login', now()->addDay(2), ['token' => $this->token]);
     }
 }
