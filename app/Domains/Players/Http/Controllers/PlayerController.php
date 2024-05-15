@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
+use NotificationChannels\Discord\Discord;
 
 
 class PlayerController extends Controller
@@ -44,6 +45,7 @@ class PlayerController extends Controller
             }
             $data['user_id'] = $character->id;
             $data['token'] = $token;
+            $data['discord_private_channel_id'] = app(Discord::class)->getPrivateChannel($data['discord_id']);
             Player::create($data);
         } catch (\Exception $exception) {
             ray($exception->getMessage());
@@ -60,7 +62,11 @@ class PlayerController extends Controller
 
     public function sendToken(Player $player): RedirectResponse
     {
-        Notification::send($player, new LoginLinkNotification());
+        try {
+            $player->notify(new LoginLinkNotification());
+        }catch (\Throwable $exception){
+            ray($exception->getMessage());
+        }
         return redirect()->route('game.page', ['game' => $player->game_id]);
     }
 
@@ -91,21 +97,16 @@ class PlayerController extends Controller
     public function delete(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'id' => 'required|integer|exists:players,id',
+            'player_id' => 'required|integer|exists:players,id',
             'game_id' => 'required|integer|exists:game,id',
         ]);
         $game = Game::find($data['game_id']);
         try {
-            Player::find($data['id'])->delete();
+            Player::find($data['player_id'])->delete();
         } catch (\Exception $exception) {
             ray($exception->getMessage());
         }
         return redirect()->route('game.page', ['game' => $game]);
     }
 
-    public function sendLoginLink(Player $player): RedirectResponse
-    {
-        $user = $player->user;
-        $token = $user?->token;
-    }
 }

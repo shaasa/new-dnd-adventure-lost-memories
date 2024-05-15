@@ -16,12 +16,14 @@
 11. ```npm run dev``` o ```npm run build``` in produzione per far partire VITE https://laravel.com/docs/11.x/vite#running-vite
 12. ```php artisan reverb:start``` per far partire Reverbe
 
-##Parametri discord
+## Parametri discord
 ```
 DISCORD_TOKEN=MTIzNTcwMjU1MTIyMzk5MjM5Mg.GqOxs4.c1wXoJqcUTDD65zho0wyNM2WmL32Nan9gK_GwA
 DISCORD_APPLICATION_ID=1235702551223992392
 DISCORD_PUBLIC_KEY=f06d2752800024aa7d44ba00815c9a47f995cf0f3b8fc50eef9767862dffd63d
 ```
+## Parametri Pusher
+
 
 ## Installare RAY
 

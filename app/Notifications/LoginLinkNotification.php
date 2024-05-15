@@ -28,9 +28,21 @@ class LoginLinkNotification extends Notification
 
     public function toDiscord($notifiable): DiscordMessage
     {
+        ray(DiscordChannel::class);
 
         $loginLink = $notifiable->generateLoginLink();
-        return DiscordMessage::create("Click here to login: " . $loginLink);
+        ray($loginLink);
+        $embed = [
+            'title' =>'Login Link0',
+            'description' => 'Click the link below to login:',
+            'url' => $loginLink
+            ];
+            $discordMessage = new DiscordMessage();
+            ray($discordMessage);
+            $discordMessage->embed($embed);
+            $discordMessage->body('Link per il login');
+            ray($discordMessage);
+        return $discordMessage;
 
     }
     /**

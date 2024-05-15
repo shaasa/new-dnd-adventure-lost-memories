@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Player;
 use App\Models\User;
 
 use Illuminate\Foundation\Application;
@@ -28,10 +29,10 @@ class AuthController extends Controller
 
     public function verifyLogin(Request $request, $token): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
-        $user = User::where('token', $token)->firstOrFail();
+        $player = Player::where('token', $token)->firstOrFail();
         abort_unless($request->hasValidSignature() && $token, 401);
 
-        Auth::login($user);
+        Auth::login($player->user);
         return redirect('dashboard');
     }
 }

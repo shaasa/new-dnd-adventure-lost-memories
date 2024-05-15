@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Barryvdh\LaravelIdeHelper\Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,14 +36,14 @@ use Illuminate\Support\Facades\URL;
  * @method static Builder|Player whereId($value)
  * @method static Builder|Player whereUpdatedAt($value)
  * @method static Builder|Player whereUserId($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Player extends Model
 {
     use HasFactory, Notifiable;
 
-    protected $table =  'players';
-    protected $fillable = ['name','discord_name', 'discord_id', 'user_id', 'game_id', 'token', 'discord_private_channel_id'];
+    protected $table = 'players';
+    protected $fillable = ['name', 'discord_name', 'discord_id', 'user_id', 'game_id', 'token', 'discord_private_channel_id'];
 
     public function user(): BelongsTo
     {
@@ -62,9 +63,11 @@ class Player extends Model
     public function routeNotificationForDiscord(): string
     {
         return $this->discord_private_channel_id;
+
     }
 
-    public function generateLoginLink(): string{
+    public function generateLoginLink(): string
+    {
         return URL::temporarySignedRoute('verify-login', now()->addDay(2), ['token' => $this->token]);
     }
 }

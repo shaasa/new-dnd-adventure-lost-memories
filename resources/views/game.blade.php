@@ -36,10 +36,10 @@
                                 <td class="border px-4 py-2">{{ $player->discord_name }}</td>
                                 <td class="border px-4 py-2">{{ $player->user->name }}</td>
                                 <td class="border px-4 py-2">
-                                    <a href="{{route('player.delete', ['player_id' => $player->id])}}" class="float-left"> {{ svg('fas-trash-alt', 'size-5 sm:size-6', ) }}</a>
+                                    <a href="{{route('player.delete', ['player_id' => $player->id, 'game_id'=>$game->id])}}" class="float-left"> {{ svg('fas-trash-alt', 'size-5 sm:size-6', ) }}</a>
                                     <a href="{{route('player.discord', ['player_id' => $player->id])}}" class="float-left"> {{ svg('fas-message', 'size-5 sm:size-6', ) }}</a>
                                     <a href="{{route('player.refresh-token', ['player' => $player->id])}}" class="float-left"> {{ svg('fas-lock', 'size-5 sm:size-6', ) }}</a>
-                                    <a href="{{route('player.send-token', ['player' => $player->id])}}"> {{ svg('fas-lock', 'size-5 sm:size-6', ) }}</a>
+                                    <a href="{{route('player.send-token', ['player' => $player->id])}}"> {{ svg('fas-link', 'size-5 sm:size-6', ) }}</a>
                                 </td>
                             </tr>
                         @endforeach

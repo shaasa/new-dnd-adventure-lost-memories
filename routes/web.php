@@ -28,9 +28,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/game/{game}', [GameController::class, 'page'])->name('game.page');
     Route::post('/player/insert', [PlayerController::class, 'insert'])->name('player.insert');
     Route::put('/player/{player_id}/update', [PlayerController::class, 'update'])->name('player.update');
-    Route::put('/player/{player}/refreshToken', [PlayerController::class, 'refreshToken'])->name('player.refresh-token');
-    Route::put('/player/{player}/sendToken', [PlayerController::class, 'sendToken'])->name('player.send-token');
+    Route::get('/player/{player}/refreshToken', [PlayerController::class, 'refreshToken'])->name('player.refresh-token');
+    Route::get('/player/{player}/sendToken', [PlayerController::class, 'sendToken'])->name('player.send-token');
     Route::post('/player/{player_id}/discord', [PlayerController::class, 'discord'])->name('player.discord');
-    Route::delete('/player/{player_id}/delete', [PlayerController::class, 'delete'])->name('player.delete');
+    Route::get('/player/{player_id}/{game_id}/delete', [PlayerController::class, 'delete'])->name('player.delete');
 })->middleware(['auth.admin', 'verified']);
 require __DIR__ . '/auth.php';
