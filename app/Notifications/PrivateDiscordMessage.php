@@ -9,42 +9,39 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\DiscordChannel;
 use NotificationChannels\Discord\DiscordMessage;
 
-class LoginLinkNotification extends Notification
+class PrivateDiscordMessage extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(public string $messageBody)
     {
-        //
+
     }
 
-    public function via($notifiable): array
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @return array<int, string>
+     */
+    public function via(object $notifiable): array
     {
         return [DiscordChannel::class];
     }
 
-    public function toDiscord($notifiable): DiscordMessage
+    public function toDiscord(object $notifiable): DiscordMessage
     {
 
+        $discordMessage = new DiscordMessage();
 
-        $loginLink = $notifiable->generateLoginLink();
 
-        $embed = [
-            'title' =>'Login Link',
-            'description' => 'Entra nell\'area riservata del tuo personaggio:',
-            'url' => $loginLink
-            ];
-            $discordMessage = new DiscordMessage();
-
-            $discordMessage->embed($embed);
-            $discordMessage->body('Link per il login');
+        $discordMessage->body($this->messageBody);
 
         return $discordMessage;
-
     }
+
     /**
      * Get the array representation of the notification.
      *

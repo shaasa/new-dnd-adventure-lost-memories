@@ -3,7 +3,6 @@
 namespace App\Domains\Players\Http\Controllers;
 
 
-use App\Domains\Discord\Services\DiscordNotification;
 use App\Domains\Players\Actions\GenerateToken;
 use App\Domains\Players\Actions\GetRandomCharacter;
 use App\Http\Controllers\Controller;
@@ -12,12 +11,10 @@ use App\Models\Player;
 use App\Notifications\LoginLinkNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\URL;
 use NotificationChannels\Discord\Discord;
 
 
-class PlayerController extends Controller
+class PlayerCrudController extends Controller
 {
     /**
      *
@@ -53,23 +50,6 @@ class PlayerController extends Controller
         return redirect()->route('game.page', ['game' => $game->id]);
     }
 
-    public function refreshToken(Player $player, GenerateToken $generateToken): RedirectResponse
-    {
-        $token = $generateToken->execute();
-        $player->update(['token' => $token]);
-        return redirect()->route('game.page', ['game' => $player->game_id]);
-    }
-
-    public function sendToken(Player $player): RedirectResponse
-    {
-        try {
-            $player->notify(new LoginLinkNotification());
-        }catch (\Throwable $exception){
-            ray($exception->getMessage());
-        }
-        return redirect()->route('game.page', ['game' => $player->game_id]);
-    }
-
     public function page(Player $player): RedirectResponse
     {
         return redirect()->route('player.page', ['player' => $player]);
@@ -94,15 +74,12 @@ class PlayerController extends Controller
         return redirect()->route('game.page', ['game' => $game]);
     }
 
-    public function delete(Request $request): RedirectResponse
+    public function delete(Player $player): RedirectResponse
     {
-        $data = $request->validate([
-            'player_id' => 'required|integer|exists:players,id',
-            'game_id' => 'required|integer|exists:game,id',
-        ]);
-        $game = Game::find($data['game_id']);
+
+        $game = $player->game;
         try {
-            Player::find($data['player_id'])->delete();
+            $player->delete();
         } catch (\Exception $exception) {
             ray($exception->getMessage());
         }

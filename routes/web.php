@@ -1,7 +1,9 @@
 <?php
 
 use App\Domains\Games\Http\Controllers\GameController;
-use App\Domains\Players\Http\Controllers\PlayerController;
+use App\Domains\Players\Http\Controllers\PlayerCrudController;
+use App\Domains\Players\Http\Controllers\PlayerDiscordController;
+use App\Domains\Players\Http\Controllers\PlayerLoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImageController;
@@ -26,11 +28,12 @@ Route::prefix('admin')->group(function () {
     Route::post('/game/insert', [GameController::class, 'insert'])->name('game.insert');
     Route::put('/game/{game_id}/update', [GameController::class, 'update'])->name('game.update');
     Route::get('/game/{game}', [GameController::class, 'page'])->name('game.page');
-    Route::post('/player/insert', [PlayerController::class, 'insert'])->name('player.insert');
-    Route::put('/player/{player_id}/update', [PlayerController::class, 'update'])->name('player.update');
-    Route::get('/player/{player}/refreshToken', [PlayerController::class, 'refreshToken'])->name('player.refresh-token');
-    Route::get('/player/{player}/sendToken', [PlayerController::class, 'sendToken'])->name('player.send-token');
-    Route::post('/player/{player_id}/discord', [PlayerController::class, 'discord'])->name('player.discord');
-    Route::get('/player/{player_id}/{game_id}/delete', [PlayerController::class, 'delete'])->name('player.delete');
+    Route::post('/player/insert', [PlayerCrudController::class, 'insert'])->name('player.insert');
+    Route::put('/player/{player}/update', [PlayerCrudController::class, 'update'])->name('player.update');
+    Route::get('/player/{player}/delete', [PlayerCrudController::class, 'delete'])->name('player.delete');
+    Route::get('/player/{player}/refreshToken', [PlayerLoginController::class, 'refreshToken'])->name('player.refresh-token');
+    Route::get('/player/{player}/sendToken', [PlayerLoginController::class, 'sendToken'])->name('player.send-token');
+    Route::post('/player/{player}/discord/sendMessage', [PlayerDiscordController::class, 'sendDiscordMessage'])->name('player.discord.send-message');
+    Route::post('/player/{player}/{faseNum}/show', [PlayerDiscordController::class, 'discord'])->name('player.show');
 })->middleware(['auth.admin', 'verified']);
 require __DIR__ . '/auth.php';

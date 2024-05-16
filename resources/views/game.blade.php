@@ -15,36 +15,40 @@
                     @if($game->players()->count() === 0)
                         Nessun giocatore ancora registrato
                     @else
-                    <table class="table-auto w-full mb-6 text-gray-300 dark:bg-gray-800">
-                        <thead class="bg-gray-900 text-white">
-                        <tr>
-                            <th class="border px-4 py-2">Nome</th>
-                            <th class="border px-4 py-2">Discord id</th>
-                            <th class="border px-4 py-2">Discord name</th>
-                            <th class="border px-4 py-2">Character</th>
-                            <th class="border px-4 py-2">Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($game->players as $player)
-                            <tr class="text-center bg-gray-700 hover:bg-gray-600">
-                                <td class="border px-4 py-2">
-                                    <a href="/admin/player/{{$player->id}}"
-                                       class="text-red-500 underline">{{ $player->name }}</a>
-                                </td>
-                                <td class="border px-4 py-2">{{ $player->discord_id }}</td>
-                                <td class="border px-4 py-2">{{ $player->discord_name }}</td>
-                                <td class="border px-4 py-2">{{ $player->user->name }}</td>
-                                <td class="border px-4 py-2">
-                                    <a href="{{route('player.delete', ['player_id' => $player->id, 'game_id'=>$game->id])}}" class="float-left"> {{ svg('fas-trash-alt', 'size-5 sm:size-6', ) }}</a>
-                                    <a href="{{route('player.discord', ['player_id' => $player->id])}}" class="float-left"> {{ svg('fas-message', 'size-5 sm:size-6', ) }}</a>
-                                    <a href="{{route('player.refresh-token', ['player' => $player->id])}}" class="float-left"> {{ svg('fas-lock', 'size-5 sm:size-6', ) }}</a>
-                                    <a href="{{route('player.send-token', ['player' => $player->id])}}"> {{ svg('fas-link', 'size-5 sm:size-6', ) }}</a>
-                                </td>
+                        <table class="table-auto w-full mb-6 text-gray-300 dark:bg-gray-800">
+                            <thead class="bg-gray-900 text-white">
+                            <tr>
+                                <th class="border px-4 py-2">Nome</th>
+                                <th class="border px-4 py-2">Discord id</th>
+                                <th class="border px-4 py-2">Discord name</th>
+                                <th class="border px-4 py-2">Character</th>
+                                <th class="border px-4 py-2">Action</th>
                             </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            @foreach($game->players as $player)
+                                <tr class="text-center bg-gray-700 hover:bg-gray-600">
+                                    <td class="border px-4 py-2">
+                                        <a href="/admin/player/{{$player->id}}"
+                                           class="text-red-500 underline">{{ $player->name }}</a>
+                                    </td>
+                                    <td class="border px-4 py-2">{{ $player->discord_id }}</td>
+                                    <td class="border px-4 py-2">{{ $player->discord_name }}</td>
+                                    <td class="border px-4 py-2">{{ $player->user->name }}</td>
+                                    <td class="border px-4 py-2">
+                                        <a href="{{route('player.delete', ['player' => $player->id, 'game_id'=>$game->id])}}" class="float-left"> {{ svg('fas-trash-alt', 'size-5 sm:size-6', ) }}</a>
+                                        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="float-left"> {{ svg('fas-message', 'size-5 sm:size-6', ) }}</button>
+                                        <a href="{{route('player.refresh-token', ['player' => $player->id])}}" class="float-left"> {{ svg('fas-lock', 'size-5 sm:size-6', ) }}</a>
+                                        <a href="{{route('player.send-token', ['player' => $player->id])}}" class="float-left"> {{ svg('fas-link', 'size-5 sm:size-6', ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 1])}}" class="float-left"> {{ svg('fas-1', 'size-5 sm:size-6', ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 2])}}" class="float-left"> {{ svg('fas-2', 'size-5 sm:size-6', ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 3])}}" class="float-left"> {{ svg('fas-3', 'size-5 sm:size-6', ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 4])}}" class="float-left"> {{ svg('fas-4', 'size-5 sm:size-6', ) }}</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
                     @endif
                     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Registra Player
@@ -69,7 +73,8 @@
                                 <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="name" name="name" value="{{ old('name') }}" required>
                             </div>
 
-                            <button type="submit" class="btn mt-4 inline-flex items-center justify-center px-5 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-black bg-blue-400 hover:bg-blue-300 focus:outline-none focus:border-blue-500 focus:shadow-outline-blue active:bg-blue-500 transition duration-150 ease-in-out">
+                            <button type="submit"
+                                    class="btn mt-4 inline-flex items-center justify-center px-5 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-black bg-blue-400 hover:bg-blue-300 focus:outline-none focus:border-blue-500 focus:shadow-outline-blue active:bg-blue-500 transition duration-150 ease-in-out">
                                 Register
                             </button>
                         </form>
