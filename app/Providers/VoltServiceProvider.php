@@ -4,8 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Livewire\Volt\Volt;
+use LivewireUI\Modal\Contracts\ModalComponent;
 
-class VoltServiceProvider extends ServiceProvider
+class VoltServiceProvider extends ServiceProvider implements ModalComponent
 {
     /**
      * Register services.

@@ -5,12 +5,11 @@ namespace App\Domains\Players\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Player;
-use App\Notifications\LoginLinkNotification;
 use App\Notifications\PrivateDiscordMessage;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Request;
+
 
 
 class PlayerDiscordController extends Controller
