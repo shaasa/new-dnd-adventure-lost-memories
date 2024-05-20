@@ -37,6 +37,6 @@ Route::prefix('admin')->middleware(['auth.admin', 'verified'])->group(function (
     Route::get('/player/{player}/refreshToken', [PlayerLoginController::class, 'refreshToken'])->name('player.refresh-token');
     Route::get('/player/{player}/sendToken', [PlayerLoginController::class, 'sendToken'])->name('player.send-token');
     Route::post('/player/{player}/discord/sendMessage', [PlayerDiscordController::class, 'sendDiscordMessage'])->name('player.discord.send-message');
-    Route::post('/player/{player}/{fase}/show', [PlayerGameController::class, 'toggle'])->name('player.show');
+    Route::get('/player/{player}/{fase}/show', [PlayerGameController::class, 'toggle'])->name('player.show');
 });
 require __DIR__ . '/auth.php';

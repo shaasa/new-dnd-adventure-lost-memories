@@ -42,9 +42,10 @@
 
                                         <a href="{{route('player.refresh-token', ['player' => $player->id])}}" class="float-left"> {{ svg('fas-lock', 'size-5 sm:size-6', ) }}</a>
                                         <a href="{{route('player.send-token', ['player' => $player->id])}}" class="float-left"> {{ svg('fas-link', 'size-5 sm:size-6', ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 1])}}" class="float-left"> {{ svg('fas-1', 'size-5 sm:size-6', ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 2])}}" class="float-left"> {{ svg('fas-2', 'size-5 sm:size-6', ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 3])}}" class="float-left"> {{ svg('fas-3', 'size-5 sm:size-6', ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'equipment'])}}" class="float-left"> {{ svg('fas-1', 'size-5 sm:size-6', ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'characteristic'])}}" class="float-left"> {{ svg('fas-2', 'size-5 sm:size-6', ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'skill'])}}" class="float-left"> {{ svg('fas-3', 'size-5 sm:size-6', ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'spell'])}}" class="float-left"> {{ svg('fas-4', 'size-5 sm:size-6', ) }}</a>
                                     </td>
                                 </tr>
                             @endforeach

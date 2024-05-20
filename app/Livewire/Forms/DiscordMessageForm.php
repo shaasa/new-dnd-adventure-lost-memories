@@ -19,8 +19,7 @@ class DiscordMessageForm extends Form
 
     public function send(Player $player): void
     {
-        ray($player);
-        $player->notify(new PrivateDiscordMessage($this->message));
+       $player->notify(new PrivateDiscordMessage($this->message));
 
     }
 }
