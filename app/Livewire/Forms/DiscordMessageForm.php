@@ -10,10 +10,12 @@ use Livewire\Form;
 class DiscordMessageForm extends Form
 {
 
-    public function __construct(public string $message)
-    {
+    public string $message;
 
-    }
+
+    protected array $rules = [
+        'message' => 'required|string|max:255',
+    ];
 
     public function send(Player $player): void
     {

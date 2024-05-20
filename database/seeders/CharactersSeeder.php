@@ -31,6 +31,7 @@ class CharactersSeeder extends Seeder
                                            'level' => 1,
                                            'alignment' => 'CG',
                                            'mandatory' => false,
+                                           'spells' => 0,
                                        ],
                                        [
                                            'id' => 3,
@@ -42,6 +43,7 @@ class CharactersSeeder extends Seeder
                                            'level' => 1,
                                            'alignment' => 'LN',
                                            'mandatory' => false,
+                                           'spells' => 1,
                                        ],
                                        [
                                            'id' => 4,
@@ -53,6 +55,7 @@ class CharactersSeeder extends Seeder
                                            'level' => 1,
                                            'alignment' => 'NN',
                                            'mandatory' => false,
+                                           'spells' => 0,
                                        ],
                                        [
                                            'id' => 5,
@@ -64,6 +67,7 @@ class CharactersSeeder extends Seeder
                                            'level' => 1,
                                            'alignment' => 'NG',
                                            'mandatory' => false,
+                                           'spells' => 1,
                                        ],
                                        [
                                            'id' => 6,
@@ -75,6 +79,7 @@ class CharactersSeeder extends Seeder
                                            'level' => 1,
                                            'alignment' => 'CG',
                                            'mandatory' => true,
+                                           'spells' => 1,
                                        ],
                                        [
                                            'id' => 7,
@@ -86,6 +91,7 @@ class CharactersSeeder extends Seeder
                                            'level' => 1,
                                            'alignment' => 'CN',
                                            'mandatory' => true,
+                                           'spells' => 0,
                                        ],
                                        [
                                            'id' => 8,
@@ -97,6 +103,7 @@ class CharactersSeeder extends Seeder
                                            'level' => 1,
                                            'alignment' => 'LG',
                                            'mandatory' => true,
+                                           'spells' => 1,
                                        ],
                                    ]);
     }

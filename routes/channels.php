@@ -16,3 +16,9 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+Broadcast::channel('admin', function ($user) {
+        return (int)$user->is_admin === 1;
+    });
+Broadcast::channel('player.{id}', function ($player, $id) {
+    return (int) $player->id === (int) $id;
+});

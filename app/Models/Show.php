@@ -15,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property int $user_id
  * @property int $game_id
  * @property string $type
+ * @property boolean $show
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Game $game
@@ -35,7 +36,7 @@ class Show extends Model
     use HasFactory;
 
     protected $table = 'shows';
-    protected $fillable = ['user_id', 'game_id', 'type'];
+    protected $fillable = ['user_id', 'game_id', 'type', 'show'];
 
     public function user(): BelongsTo
     {

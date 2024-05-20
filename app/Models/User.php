@@ -34,6 +34,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property string|null $class
  * @property int|null $level
  * @property string|null $alignment
+ * @property boolean|null $spells
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read Collection<int, Player> $players
@@ -87,7 +88,8 @@ class User extends Authenticatable
         'level',
         'class',
         'alignment',
-        'mandatory'
+        'mandatory',
+        'spells'
     ];
 
     protected $hidden = [

@@ -5,9 +5,11 @@ namespace App\Domains\Players\Http\Controllers;
 
 use App\Domains\Players\Actions\GenerateToken;
 use App\Domains\Players\Actions\GetRandomCharacter;
+use App\Enums\TypeEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Game;
 use App\Models\Player;
+use App\Models\Show;
 use App\Notifications\LoginLinkNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,6 +46,15 @@ class PlayerCrudController extends Controller
             $data['token'] = $token;
             $data['discord_private_channel_id'] = app(Discord::class)->getPrivateChannel($data['discord_id']);
             Player::create($data);
+
+            foreach (TypeEnum::cases() as $type){
+                Show::create([
+                    'user_id' => $character->id,
+                    'type'      => $type->value,
+                    'game_id' => $game->id,
+                    'show' => false
+                ]);
+            }
         } catch (\Exception $exception) {
             ray($exception->getMessage());
         }

@@ -22,4 +22,10 @@ class DashboardController extends Controller
 
         return view('dashboard', compact('games'));
     }
+
+    public function dashboardPlayer(): Application|Factory|\Illuminate\Foundation\Application|View
+    {
+
+        return view('dashboard-player');
+    }
 }

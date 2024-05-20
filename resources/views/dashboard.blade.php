@@ -1,6 +1,9 @@
 @php
     $user = auth()->user();
     $isAdmin = $user->is_admin;
+    if(!$isAdmin){
+        redirect(route('dashboard-player'));
+    }
 @endphp
 
 <x-app-layout>

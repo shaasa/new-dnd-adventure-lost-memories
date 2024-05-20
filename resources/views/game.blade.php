@@ -45,7 +45,6 @@
                                         <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 1])}}" class="float-left"> {{ svg('fas-1', 'size-5 sm:size-6', ) }}</a>
                                         <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 2])}}" class="float-left"> {{ svg('fas-2', 'size-5 sm:size-6', ) }}</a>
                                         <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 3])}}" class="float-left"> {{ svg('fas-3', 'size-5 sm:size-6', ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'faseNum' => 4])}}" class="float-left"> {{ svg('fas-4', 'size-5 sm:size-6', ) }}</a>
                                     </td>
                                 </tr>
                             @endforeach

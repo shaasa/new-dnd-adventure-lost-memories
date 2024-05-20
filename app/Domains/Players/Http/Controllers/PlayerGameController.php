@@ -3,18 +3,18 @@
 namespace App\Domains\Players\Http\Controllers;
 
 
+use App\Enums\TypeEnum;
+use App\Events\ToggleCharacterSheet;
 use App\Http\Controllers\Controller;
+use App\Models\Player;
 
 
 class PlayerGameController extends Controller
 {
-    public function show(int $playerId, int $faseNum)
+    public function toggle(Player $player, TypeEnum $fase)
     {
-        //TODO: Usare reverb per far apparire i vari pezzi della scheda
+        ToggleCharacterSheet::dispatch($player,$fase,1);
     }
 
-    public function hide(int $playerId, int $faseNum)
-    {
-        //TODO: Usare reverb per nascondere i vari pezzi della scheda
-    }
+
 }
