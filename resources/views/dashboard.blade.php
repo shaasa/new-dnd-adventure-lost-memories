@@ -1,8 +1,10 @@
 @php
     $user = auth()->user();
     $isAdmin = $user->is_admin;
+
     if(!$isAdmin){
-        redirect(route('dashboard-player'));
+
+        redirect()->route('/');
     }
 @endphp
 
@@ -14,7 +16,13 @@
             @endif
         </h2>
     </x-slot>
+    <script>
 
+        document.addEventListener('DOMContentLoaded', function () {
+
+        })
+
+    </script>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

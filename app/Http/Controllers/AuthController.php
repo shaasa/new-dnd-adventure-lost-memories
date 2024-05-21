@@ -27,12 +27,15 @@ class AuthController extends Controller
         return redirect()->back();
     }
 
-    public function verifyLogin(Request $request, $token): Application|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
+    public function verifyLogin(Request $request, $token)
     {
         $player = Player::where('token', $token)->firstOrFail();
         abort_unless($request->hasValidSignature() && $token, 401);
 
         Auth::login($player->user);
-        return redirect('dashboard');
+        if ($player->user->getRedirectRoute() === 'admin') {
+            return redirect('dashboard');
+        }
+        return redirect()->route('dashboard-player', ['player' => $player]);
     }
 }

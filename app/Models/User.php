@@ -122,5 +122,12 @@ class User extends Authenticatable
         return $this->is_admin;
     }
 
+    public function getRedirectRoute(): string
+    {
+        return match((int)$this->isAdmin()) {
+            0 => 'player',
+            1 => 'admin'
+        };
+    }
 
 }

@@ -4,7 +4,29 @@
             Gestione partita {{$game->name}}
         </h2>
     </x-slot>
+    <script>
 
+        document.addEventListener('DOMContentLoaded', function (callback) {
+
+            Echo.join('App.Models.Game.{{$game->id}}')
+                .here((users) => {
+                    users.each(function (player) {
+                        console.log(player)
+                    })
+
+                })
+                .joining((user) => {
+                    console.log(user);
+                })
+                .leaving((user) => {
+                    console.log(user);
+                })
+                .error((error) => {
+                    console.error(error);
+                });
+        })
+
+    </script>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -18,6 +40,7 @@
                         <table class="table-auto w-full mb-6 text-gray-300 dark:bg-gray-800">
                             <thead class="bg-gray-900 text-white">
                             <tr>
+                                <th class="border px-4 py-2">Stato</th>
                                 <th class="border px-4 py-2">Nome</th>
                                 <th class="border px-4 py-2">Discord id</th>
                                 <th class="border px-4 py-2">Discord name</th>
@@ -28,6 +51,7 @@
                             <tbody>
                             @foreach($game->players as $player)
                                 <tr class="text-center bg-gray-700 hover:bg-gray-600">
+                                    <td class="border px-4 py-2"> {{ svg('fas-circle', 'size-5 sm:size-6', ['id'=>'player'.$player->id, 'style'=>'color:grey']) }}</td>
                                     <td class="border px-4 py-2">
                                         <a href="/admin/player/{{$player->id}}"
                                            class="text-red-500 underline">{{ $player->name }}</a>

@@ -16,7 +16,7 @@ Route::get('/', [WelcomeController::class, 'gamesList'])->name('welcome');
 Route::get('dashboard', [DashboardController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
-Route::get('dashboard-player', [DashboardController::class, 'dashboardPlayer'])
+Route::get('dashboard/{player}/player', [DashboardController::class, 'dashboardPlayer'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard-player');
 

@@ -47,12 +47,12 @@ class Player extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function game(): BelongsTo
     {
-        return $this->belongsTo(Game::class);
+        return $this->belongsTo(Game::class, 'game_id');
     }
 
     public function players(): HasMany

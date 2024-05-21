@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Enums\TypeEnum;
+use App\Models\Game;
 use App\Models\Player;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -12,26 +12,27 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ToggleCharacterSheet implements ShouldBroadcast
+class NewMessage
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public function __construct(
-        public Player $player,
-        public TypeEnum $sheetPart,
-        public bool $show
-    ) {
-
+    /**
+     * Create a new event instance.
+     */
+    public function __construct(public Game $game,public string $message, public Player $player)
+    {
+        //
     }
-
 
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel
+     * @return array<int, Channel>
      */
-    public function broadcastOn(): Channel
+    public function broadcastOn(): array
     {
-        return new Channel('App.Models.Player.' . $this->player->id);
+        return [
+            new PresenceChannel('game.'.$this->game->id),
+        ];
     }
 }

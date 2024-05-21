@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Player;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -14,11 +15,15 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+    return (int)$user->id === (int)$id;
 });
 Broadcast::channel('admin', function ($user) {
-        return (int)$user->is_admin === 1;
-    });
-Broadcast::channel('player.{id}', function ($player, $id) {
-    return (int) $player->id === (int) $id;
+    return (int)$user->is_admin === 1;
+});
+Broadcast::channel('App.Models.Player.{id}', function ($player, $id) {
+    return (int)$player->id === (int)$id;
+});
+Broadcast::channel('App.Models.Game.{gameId}', function ($user, $gameId) {
+    $player = Player::where('user_id',$user->id)->where('game_id',$gameId)->first();
+    return $player !== null || $user->is_admin === 1;
 });
