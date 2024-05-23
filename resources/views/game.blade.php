@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Gestione partita {{$game->name}}
+            {{ __('game management') }} {{$game->name}}
         </h2>
     </x-slot>
     <script>
@@ -9,47 +9,71 @@
         document.addEventListener('DOMContentLoaded', function (callback) {
 
             Echo.join('App.Models.Game.{{$game->id}}')
-                .here((users) => {
-                    users.each(function (player) {
-                        console.log(player)
-                    })
 
+                .here((playerId) => {
+                    playerId.forEach((player) => {
+                        if (player.id !== 'admin') {
+                            const element = document.getElementById('player' + player.id);
+                            if (element) {
+                                element.style.color = 'green'; // cambia questo al colore che vuoi
+                            }
+                        }
+                    })
                 })
-                .joining((user) => {
-                    console.log(user);
+                .joining((player) => {
+                    if (player.id !== 'admin') {
+                        const element = document.getElementById('player' + player.id);
+                        if (element) {
+                            element.style.color = 'green'; // cambia questo al colore che vuoi
+                        }
+                    }
                 })
-                .leaving((user) => {
-                    console.log(user);
+                .leaving((player) => {
+                    if (player.id !== 'admin') {
+                        const element = document.getElementById('player' + player.id);
+                        if (element) {
+                            element.style.color = 'grey'; // cambia questo al colore che vuoi
+                        }
+                    }
                 })
                 .error((error) => {
                     console.error(error);
                 });
-        })
 
+        });
     </script>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4">
                     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Giocatori
+                        {{ucfirst(__('players'))}}
                     </h2>
                     @if($game->players()->count() === 0)
-                        Nessun giocatore ancora registrato
+                    {{__('no players')}}
                     @else
                         <table class="table-auto w-full mb-6 text-gray-300 dark:bg-gray-800">
                             <thead class="bg-gray-900 text-white">
                             <tr>
-                                <th class="border px-4 py-2">Stato</th>
-                                <th class="border px-4 py-2">Nome</th>
+                                <th class="border px-4 py-2">{{__('status')}}</th>
+                                <th class="border px-4 py-2">{{__('name')}}</th>
                                 <th class="border px-4 py-2">Discord id</th>
-                                <th class="border px-4 py-2">Discord name</th>
-                                <th class="border px-4 py-2">Character</th>
-                                <th class="border px-4 py-2">Action</th>
+                                <th class="border px-4 py-2">{{__('discord name')}}</th>
+                                <th class="border px-4 py-2">{{__('character')}}/{{__('class')}}/{{__('race')}}</th>
+                                <th class="border px-4 py-2">{{__('actions')}}</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($game->players as $player)
+                                @php
+                                    $user = $player->user;
+                                    $shows = \App\Models\Show::where('user_id',$user->id)->where('game_id', $game->id)->get();
+                                    $s = [];
+                                    foreach ($shows as $show){
+                                        $color = $show->show ? ['style'=>'color:green'] :[];
+                                        $s[$show->type] = $color;
+                                    }
+                                @endphp
                                 <tr class="text-center bg-gray-700 hover:bg-gray-600">
                                     <td class="border px-4 py-2"> {{ svg('fas-circle', 'size-5 sm:size-6', ['id'=>'player'.$player->id, 'style'=>'color:grey']) }}</td>
                                     <td class="border px-4 py-2">
@@ -58,54 +82,55 @@
                                     </td>
                                     <td class="border px-4 py-2">{{ $player->discord_id }}</td>
                                     <td class="border px-4 py-2">{{ $player->discord_name }}</td>
-                                    <td class="border px-4 py-2">{{ $player->user->name }}</td>
+                                    <td class="border px-4 py-2">{{ $player->user->name }}/{{ $player->user->class }}/{{ $player->user->race }}</td>
                                     <td class="border px-4 py-2">
-                                        <a href="{{route('player.delete', ['player' => $player->id, 'game_id'=>$game->id])}}" class="float-left"> {{ svg('fas-trash-alt', 'size-5 sm:size-6', ) }}</a>
+                                        <a href="{{route('player.delete', ['player' => $player->id, 'game_id'=>$game->id])}}" class="float-left"> {{ svg('fas-trash-alt', 'size-5 sm:size-6' ) }}</a>
 
-                                        <button onclick="Livewire.dispatch('openModal', { component: 'send-discord-message', arguments: { player: {{ $player->id }} }})">{{ svg('fas-message', 'size-5 sm:size-6', ) }}</button>
+                                        <button onclick="Livewire.dispatch('openModal', { component: 'send-discord-message', arguments: { player: {{ $player->id }} }})">{{ svg('fas-message', 'size-5 sm:size-6' ) }}</button>
 
-                                        <a href="{{route('player.refresh-token', ['player' => $player->id])}}" class="float-left"> {{ svg('fas-lock', 'size-5 sm:size-6', ) }}</a>
-                                        <a href="{{route('player.send-token', ['player' => $player->id])}}" class="float-left"> {{ svg('fas-link', 'size-5 sm:size-6', ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'equipment'])}}" class="float-left"> {{ svg('fas-1', 'size-5 sm:size-6', ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'characteristic'])}}" class="float-left"> {{ svg('fas-2', 'size-5 sm:size-6', ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'skill'])}}" class="float-left"> {{ svg('fas-3', 'size-5 sm:size-6', ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'spell'])}}" class="float-left"> {{ svg('fas-4', 'size-5 sm:size-6', ) }}</a>
+
+                                        <a href="{{route('player.send-token', ['player' => $player->id])}}" class="float-left"> {{ svg('fas-link', 'size-5 sm:size-6 ml-4', ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'equipment'])}}" class="float-left"> {{ svg('phosphor-sword-bold', 'size-5 sm:size-6 ml-4', $s['equipment']) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'characteristic'])}}" class="float-left"> {{ svg('fas-person', 'size-5 sm:size-6 ml-4',$s['characteristic'] ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'skill'])}}" class="float-left"> {{ svg('fas-dice-d20', 'size-5 sm:size-6 ml-4',$s['skill'] ) }}</a>
+                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'spell'])}}" class="float-left"> {{ svg('fas-book-bookmark', 'size-5 sm:size-6 ml-4', $s['spell']) }}</a>
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
                     @endif
-                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Registra Player
-                    </h2>
+                    @if($game->players->count() < $game->players_count)
+                        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                            Registra Player
+                        </h2>
 
-                    <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">
-                        <form method="POST" action="{{ route('player.insert') }}">
-                            @csrf
-                            <input type="hidden" name="game_id" value="{{$game->id}}">
-                            <div class="form-group">
-                                <label for="discord_id" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Discord ID</label>
-                                <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="discord_id" name="discord_id" value="{{ old('discord_id') }}" required>
-                            </div>
+                        <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">
+                            <form method="POST" action="{{ route('player.insert') }}">
+                                @csrf
+                                <input type="hidden" name="game_id" value="{{$game->id}}">
+                                <div class="form-group">
+                                    <label for="discord_id" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Discord ID</label>
+                                    <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="discord_id" name="discord_id" value="{{ old('discord_id') }}" required>
+                                </div>
 
-                            <div class="form-group mt-4">
-                                <label for="discord_name" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Discord Name</label>
-                                <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="discord_name" name="discord_name" value="{{ old('discord_name') }}" required>
-                            </div>
+                                <div class="form-group mt-4">
+                                    <label for="discord_name" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Discord Name</label>
+                                    <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="discord_name" name="discord_name" value="{{ old('discord_name') }}" required>
+                                </div>
 
-                            <div class="form-group mt-4">
-                                <label for="name" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Name</label>
-                                <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="name" name="name" value="{{ old('name') }}" required>
-                            </div>
+                                <div class="form-group mt-4">
+                                    <label for="name" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Name</label>
+                                    <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="name" name="name" value="{{ old('name') }}" required>
+                                </div>
 
-                            <button type="submit"
-                                    class="btn mt-4 inline-flex items-center justify-center px-5 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-black bg-blue-400 hover:bg-blue-300 focus:outline-none focus:border-blue-500 focus:shadow-outline-blue active:bg-blue-500 transition duration-150 ease-in-out">
-                                Register
-                            </button>
-                        </form>
-                    </div>
-
+                                <button type="submit"
+                                        class="btn mt-4 inline-flex items-center justify-center px-5 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-black bg-blue-400 hover:bg-blue-300 focus:outline-none focus:border-blue-500 focus:shadow-outline-blue active:bg-blue-500 transition duration-150 ease-in-out">
+                                    Register
+                                </button>
+                            </form>
+                        </div>
+                    @endif
                     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         Modifica partita
                     </h2>

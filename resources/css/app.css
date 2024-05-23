@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.image-container {
+    position: relative;
+    min-height: 1500px;
+}
+
+.image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+@layer utilities {
+    .bg-gradient-to-r {
+        background-image: linear-gradient(to right, var(--tw-gradient-stops));
+    }
+}
+#nome{
+
+    clip-path: polygon(0 0, 43% 0, 43% 15%, 0 15%); /* immagine completamente nascosta all'inizio */
+}
+
+#characteristic{
+    display: none;
+    clip-path: polygon(0 78%, 35% 78%, 35% 74%,15% 74%, 15% 10%, 0 10%);/* immagine completamente nascosta all'inizio */
+}
+
+#skill{
+    display: none;
+    clip-path: polygon(15% 10%, 35% 10%, 35% 74%, 15% 74%);/* immagine completamente nascosta all'inizio */
+}
+
+#equipment{
+    display: none;
+    clip-path: polygon(65% 100%, 34% 100%, 34% 15%, 66% 15%);/* immagine completamente nascosta all'inizio */
+}
+#tutta{
+    display: none;
+}
