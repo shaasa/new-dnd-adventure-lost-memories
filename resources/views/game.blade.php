@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('game management') }} {{$game->name}}
+            {{ __('game.game management') }} {{$game->name}}
         </h2>
     </x-slot>
     <script>
@@ -47,20 +47,20 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4">
                     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        {{ucfirst(__('players'))}}
+                        {{ucfirst(__('game.players'))}}
                     </h2>
                     @if($game->players()->count() === 0)
-                    {{__('no players')}}
+                    {{__('game.no players')}}
                     @else
                         <table class="table-auto w-full mb-6 text-gray-300 dark:bg-gray-800">
                             <thead class="bg-gray-900 text-white">
                             <tr>
-                                <th class="border px-4 py-2">{{__('status')}}</th>
-                                <th class="border px-4 py-2">{{__('name')}}</th>
+                                <th class="border px-4 py-2">{{__('game.status')}}</th>
+                                <th class="border px-4 py-2">{{__('game.name')}}</th>
                                 <th class="border px-4 py-2">Discord id</th>
-                                <th class="border px-4 py-2">{{__('discord name')}}</th>
-                                <th class="border px-4 py-2">{{__('character')}}/{{__('class')}}/{{__('race')}}</th>
-                                <th class="border px-4 py-2">{{__('actions')}}</th>
+                                <th class="border px-4 py-2">{{__('game.discord name')}}</th>
+                                <th class="border px-4 py-2">{{__('game.character')}}/{{__('game.class')}}/{{__('game.race')}}</th>
+                                <th class="border px-4 py-2">{{__('game.actions')}}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -102,7 +102,7 @@
                     @endif
                     @if($game->players->count() < $game->players_count)
                         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                            Registra Player
+                            {{__('game.new')}} {{__('game.player')}}
                         </h2>
 
                         <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">
@@ -132,7 +132,7 @@
                         </div>
                     @endif
                     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Modifica partita
+                        {{__('game.modify')}} {{__('game.game')}}
                     </h2>
 
 
@@ -142,8 +142,8 @@
                             @csrf
                             <div class="form-group">
                                 <label for="name"
-                                       class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Nome
-                                    Gioco</label>
+                                       class="block text-gray-300 dark:text-gray-500 text-sm font-medium">{{ucfirst(__('game.name'))}} {{__('game.game')}}
+                                    </label>
                                 <input type="text"
                                        class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md"
                                        id="name" name="name" value="{{$game->name}}"
@@ -151,8 +151,8 @@
                             </div>
                             <div class="form-group mt-4">
                                 <label for="players_count"
-                                       class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Numero di
-                                    Giocatori</label>
+                                       class="block text-gray-300 dark:text-gray-500 text-sm font-medium">{{__('game.number')}}
+                                    {{__('game.players')}}</label>
                                 <input type="number"
                                        class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md"
                                        id="players_count" name="players_count" value="{{$game->players_count}}"

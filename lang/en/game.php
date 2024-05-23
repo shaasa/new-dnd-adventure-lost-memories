@@ -21,9 +21,9 @@ return [
     'status' => 'Status',
     'name' => 'Name',
     'discord name' => 'Discord name',
-    'action' => 'Actions',
+    'actions' => 'Actions',
     'character' => 'Character',
     'class' => 'Class',
     'race' => 'Race',
-
+    'modify' => 'Modify',
 ];

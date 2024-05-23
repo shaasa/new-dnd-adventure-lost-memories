@@ -20,10 +20,12 @@ return [
 'status' => 'Stato',
 'name' => 'Nome',
 'discord name' => 'Nome Discord',
-'action' => 'Azioni',
+'actions' => 'Azioni',
 'character' => 'Personaggio',
 'class' => 'Classe',
 'race' => 'Razza',
+'modify' => 'Modifica',
+'number' => 'Numero di',
 
 
 ];
