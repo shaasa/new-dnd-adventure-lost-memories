@@ -1,5 +1,13 @@
 <?php
 
+$tls = [];
+if (env('REVERB_CERT')) {
+    $tls = [
+        'local_cert' => env('REVERB_CERT'),
+        'local_pk' => env('REVERB_CERT'),
+    ];
+}
+
 return [
 
     /*
@@ -33,7 +41,7 @@ return [
             'port' => env('REVERB_SERVER_PORT', 8080),
             'hostname' => env('REVERB_HOST'),
             'options' => [
-                'tls' => [],
+                'tls' => $tls,
             ],
             'max_request_size' => env('REVERB_MAX_REQUEST_SIZE', 10_000),
             'scaling' => [
@@ -80,7 +88,7 @@ return [
                     'scheme' => env('REVERB_SCHEME', 'https'),
                     'useTLS' => env('REVERB_SCHEME', 'https') === 'https',
                 ],
-                'allowed_origins' => ['localhost','127.0.0.1','vacanzare.com','vacanzare.com.test'],
+                'allowed_origins' => ['*'],
                 'ping_interval' => env('REVERB_APP_PING_INTERVAL', 60),
                 'max_message_size' => env('REVERB_APP_MAX_MESSAGE_SIZE', 10_000),
             ],
