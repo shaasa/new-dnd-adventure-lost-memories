@@ -67,16 +67,16 @@
                     </h2>
                 </div>
                 <div class="image-container bg-gray-800 shadow-xl rounded-lg mb-12 p-12 clear-both">
-                    <img id="nome" src="{{asset('schede/'.$user->id.'.png')}}" alt="Immagine">
+                    <img id="nome" src="{{ route('image.sheet.show', ['imageName' => $user->id.'.png']) }}" alt="Immagine">
                     @foreach($s as $k => $v)
-                        <img id="{{$k}}" src="{{asset('schede/'.$user->id.'.png')}}" style="display: {{$v}}" alt="{{$k}}">
+                        <img id="{{$k}}" src="{{ route('image.sheet.show', ['imageName' => $user->id.'.png']) }}" style="display: {{$v}}" alt="{{$k}}">
                     @endforeach
-                    <img id="tutta" src="{{asset('schede/'.$user->id.'.png')}}" alt="Immagine">
+                    <img id="tutta" src="{{ route('image.sheet.show', ['imageName' => $user->id.'.png']) }}" alt="Immagine">
 
                 </div>
                 @if($user->spells)
                     <div class="image-container bg-gray-800 shadow-xl rounded-lg mb-12 p-12 clear-both">
-                        <img id="spell" style="display: {{$spell}}" src="{{asset('schede/'.$user->id.'s.png')}}" alt="Spell">
+                        <img id="spell" style="display: {{$spell}}" src="{{ route('image.sheet.show', ['imageName' => $user->id.'s.png']) }}" alt="Spell">
                     </div>
                 @endif
                 <div class="clear-both"></div>

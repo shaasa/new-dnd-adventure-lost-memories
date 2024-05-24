@@ -25,6 +25,7 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 Route::get('/images/{imageName}', [ImageController::class, 'show'])->name('image.show');
+Route::get('/images/sheet/{imageName}', [ImageController::class, 'showSheet'])->name('image.sheet.show');
 Route::get('verify-login/{token}', [AuthController::class, 'verifyLogin'])->name('verify-login');
 
 Route::prefix('admin')->middleware(['auth.admin', 'verified'])->group(function () {

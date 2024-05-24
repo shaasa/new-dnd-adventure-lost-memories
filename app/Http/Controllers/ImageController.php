@@ -26,4 +26,24 @@ class ImageController extends Controller
         // Return the image as a response
         return response()->file($path);
     }
+
+    /**
+     * Display the specified image.
+     *
+     * @param string $imageName
+     * @return BinaryFileResponse
+     */
+    public function showSheet(string $imageName): BinaryFileResponse
+    {
+        // Construct the full path to the image within the storage directory
+        $path = storage_path("app/public/images/schede/{$imageName}");
+
+        // Check if the image exists; if not, return a 404 response
+        if (!Storage::exists("public/images/schede/{$imageName}")) {
+            abort(404);
+        }
+
+        // Return the image as a response
+        return response()->file($path);
+    }
 }
