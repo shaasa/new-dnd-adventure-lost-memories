@@ -122,8 +122,7 @@
                             <h2 class="text-xl font-semibold text-black dark:text-white">Istruzioni</h2>
 
                             <p class="mt-4 text-sm/relaxed">
-                                Richiedi al master il tuo id personale e poi, entrando in una partita aperta, potrai
-                                registrarti e avere accesso alla tua area riservata.
+                                Richiedi al master il link per effettuare il login, ed avere accesso alla tua area riservata.
                             </p>
                         </div>
 
@@ -141,7 +140,7 @@
                             <h2 class="text-xl font-semibold text-black dark:text-white">Lunga vita e prosperità</h2>
 
                             <p class="mt-4 text-sm/relaxed">
-                                Non c'entra niente con l'avventura ma mi piaceva l'icona e la volevo usare. &#128513;
+                                Così, ci stava... &#128513;
                             </p>
                         </div>
                     </div>
