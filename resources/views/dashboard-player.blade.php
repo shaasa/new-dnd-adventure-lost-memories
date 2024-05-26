@@ -1,8 +1,10 @@
 @php
+    use App\Models\Game;
+    use App\Models\Show;
     $user = auth()->user();
     $isAdmin = $user->is_admin;
-    $game = \App\Models\Game::findOrFail($player->game_id);
-    $shows = \App\Models\Show::where('user_id',$user->id)->where('game_id', $game->id)->get();
+    $game = Game::findOrFail($player->game_id);
+    $shows = Show::where('user_id',$user->id)->where('game_id', $game->id)->get();
     $s = [];
     foreach ($shows as $show){
         $display = $show->show ? 'block' :'none';
@@ -67,16 +69,20 @@
                     </h2>
                 </div>
                 <div class="image-container bg-gray-800 shadow-xl rounded-lg mb-12 p-12 clear-both">
-                    <img id="nome" src="{{ route('image.sheet.show', ['imageName' => $user->id.'.png']) }}" alt="Immagine">
+                    <img id="nome" src="{{ route('image.sheet.show', ['imageName' => $user->id.'.png']) }}"
+                         alt="Immagine">
                     @foreach($s as $k => $v)
-                        <img id="{{$k}}" src="{{ route('image.sheet.show', ['imageName' => $user->id.'.png']) }}" style="display: {{$v}}" alt="{{$k}}">
+                        <img id="{{$k}}" src="{{ route('image.sheet.show', ['imageName' => $user->id.'.png']) }}"
+                             style="display: {{$v}}" alt="{{$k}}">
                     @endforeach
-                    <img id="tutta" src="{{ route('image.sheet.show', ['imageName' => $user->id.'.png']) }}" alt="Immagine">
+                    <img id="tutta" src="{{ route('image.sheet.show', ['imageName' => $user->id.'.png']) }}"
+                         alt="Immagine">
 
                 </div>
                 @if($user->spells)
                     <div class="image-container bg-gray-800 shadow-xl rounded-lg mb-12 p-12 clear-both">
-                        <img id="spell" style="display: {{$spell}}" src="{{ route('image.sheet.show', ['imageName' => $user->id.'s.png']) }}" alt="Spell">
+                        <img id="spell" style="display: {{$spell}}"
+                             src="{{ route('image.sheet.show', ['imageName' => $user->id.'s.png']) }}" alt="Spell">
                     </div>
                 @endif
                 <div class="clear-both"></div>
