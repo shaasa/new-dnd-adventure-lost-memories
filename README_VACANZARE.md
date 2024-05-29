@@ -17,6 +17,7 @@
 12. ```npm run dev``` o ```npm run build``` in produzione per far partire VITE https://laravel.com/docs/11.x/vite#running-vite
 13. ```php artisan reverb:start``` per far partire Reverb
 14. ```php artisan queue:work``` Non so ancora se mi servirà per Reverb, ma intanto lo scrivo per non scordarmelo
+15. ```php artisan horizon:install``` far partire horizon
 
 ## Parametri discord
 ```
