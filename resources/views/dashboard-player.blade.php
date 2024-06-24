@@ -24,9 +24,59 @@
         </h2>
     </x-slot>
     <script>
-
-
         document.addEventListener('DOMContentLoaded', function () {
+            const playerId = '{{ $player->id }}';
+            const gameId = '{{ $game->id }}';
+            const userSpells = '{{ $user->spells }}' == 1;
+
+            console.log('Subscribing to player channel: App.Models.Player.'+playerId);
+            console.log('Joining game channel: App.Models.Game.${gameId}');
+
+            Echo.channel('App.Models.Player.'+playerId)
+                .listen('ToggleCharacterSheet', (e) => {
+                    console.log('ToggleCharacterSheet event received:', e);
+                    if (e.show) {
+                        if (e.sheetPart === 'spell') {
+                            if (userSpells) {
+                                document.getElementById(e.sheetPart).style.display = 'block';
+                            }
+                            document.getElementById('tutta').style.display = 'block';
+                        } else {
+                            document.getElementById(e.sheetPart).style.display = 'block';
+                        }
+                    } else {
+                        if (e.sheetPart === 'spell') {
+                            if (userSpells) {
+                                document.getElementById(e.sheetPart).style.display = 'none';
+                            }
+                            document.getElementById('tutta').style.display = 'none';
+                        } else {
+                            document.getElementById(e.sheetPart).style.display = 'none';
+                        }
+                    }
+                });
+
+            Echo.join('App.Models.Game.'+gameId)
+                .here((users) => {
+                    console.log('Current users in the channel:', users);
+                })
+                .joining((user) => {
+                    console.log('User joined:', user);
+                })
+                .leaving((user) => {
+                    console.log('User left:', user);
+                })
+                .error((error) => {
+                    console.error('Error joining game channel: ' + 'App.Models.Game.' + gameId, error);
+                })
+                .listen('NewMessage', (e) => {
+                    console.log('NewMessage event received:', e);
+                });
+        });
+
+
+
+        /*document.addEventListener('DOMContentLoaded', function () {
 
             Echo.channel('App.Models.Player.{{ $player->id }}')
                 .listen('ToggleCharacterSheet', (e) => {
@@ -58,7 +108,7 @@
                 .listen('NewMessage', (e) => {
                     console.log(e);
                 });
-        })
+        })*/
     </script>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

@@ -9,10 +9,9 @@
         document.addEventListener('DOMContentLoaded', function (callback) {
 
             Echo.join('App.Models.Game.{{$game->id}}')
-
-                .here((playerId) => {
-                    playerId.forEach((player) => {
-                        if (player.id !== 'admin') {
+                .here((user) => {
+                    user.forEach((user) => {
+                        if (!user.is_admin) {
                             const element = document.getElementById('player' + player.id);
                             if (element) {
                                 element.style.color = 'green'; // cambia questo al colore che vuoi
@@ -35,6 +34,9 @@
                             element.style.color = 'grey'; // cambia questo al colore che vuoi
                         }
                     }
+                })
+                .listen('NewMessage', (e) => {
+                    console.log('NewMessage event received:', e);
                 })
                 .error((error) => {
                     console.error(error);

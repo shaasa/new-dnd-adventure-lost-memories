@@ -8,6 +8,10 @@ import axios from 'axios';
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.baseURL = 'https://vacanzare.com.test:5173';
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.withCredentials = true;  // Se hai bisogno di inviare cookie con la richiesta
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

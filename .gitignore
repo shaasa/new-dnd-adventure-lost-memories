@@ -33,4 +33,5 @@ public_html/hot
 storage/*.key
 /.vagrant
 ray.php
+ngrok.exe
 

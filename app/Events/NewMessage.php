@@ -4,22 +4,22 @@ namespace App\Events;
 
 use App\Models\Game;
 use App\Models\Player;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NewMessage
+class NewMessage implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(public Game $game,public string $message, public Player $player)
+    public function __construct(public Game $game, public string $message, public Player $player)
     {
         //
     }
@@ -32,7 +32,8 @@ class NewMessage
     public function broadcastOn(): array
     {
         return [
-            new PresenceChannel('game.'.$this->game->id),
+            new PresenceChannel('App.Models.Game.' . $this->game->id),
         ];
     }
 }
+

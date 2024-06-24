@@ -9,20 +9,46 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\WelcomeController;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+Broadcast::routes();
+
+Route::post('/broadcasting/auth', function (Request $request) {
+    $user = Auth::user();
+
+    // Debugging la richiesta
+    ray($request->all());
+
+    if ($user) {
+        $response =
+            [
+                'id' => $user->id,
+                'user_info' => [
+                    'name' => $user->name,
+                ]
+            ];
+
+        Log::info('Authorization response: ' . json_encode($response, JSON_THROW_ON_ERROR));
+        return new JsonResponse($response);
+    }
+
+    return new JsonResponse([], 403);
+});
 
 Route::get('/', [WelcomeController::class, 'gamesList'])->name('welcome');
 
 Route::get('dashboard', [DashboardController::class, 'dashboard'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+     ->middleware(['auth', 'verified'])
+     ->name('dashboard');
 Route::get('dashboard/{player}/player', [DashboardController::class, 'dashboardPlayer'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard-player');
+     ->middleware(['auth', 'verified'])
+     ->name('dashboard-player');
 
 Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+     ->middleware(['auth'])
+     ->name('profile');
 
 Route::get('/images/{imageName}', [ImageController::class, 'show'])->name('image.show');
 Route::get('/images/sheet/{imageName}', [ImageController::class, 'showSheet'])->name('image.sheet.show');
@@ -41,3 +67,12 @@ Route::prefix('admin')->middleware(['auth.admin', 'verified'])->group(function (
     Route::get('/player/{player}/{fase}/show', [PlayerGameController::class, 'toggle'])->name('player.show');
 });
 require __DIR__ . '/auth.php';
+
+
+
+// File: ./routes/web.php
+
+
+    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+    Route::post('/', 'Auth\LoginController@login');
+    Route::view('/', 'signin')->middleware('guest')->name('login');
