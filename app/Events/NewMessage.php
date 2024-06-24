@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\Game;
-use App\Models\Player;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -19,7 +18,7 @@ class NewMessage implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(public Game $game, public string $message, public Player $player)
+    public function __construct(public Game $game, public string $message, public User $player)
     {
         //
     }

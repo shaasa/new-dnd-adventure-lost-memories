@@ -14,28 +14,27 @@ return new class extends Migration
     public function up(): void
     {
 
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('race')->nullable()->after('password');
-            $table->string('class')->nullable()->after('password');
-            $table->integer('level')->default(1)->after('password');
-            $table->string('alignment')->default('CG')->after('password');
+        Schema::create('characters', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->boolean('mandatory')->default(false);
+            $table->string('race')->nullable();
+            $table->string('class')->nullable();
+            $table->integer('level')->default(1);
+            $table->string('alignment')->default('CG');
+            $table->boolean('spells')->default(0);
+            $table->timestamps();
         });
 
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->integer('players_count');
+            $table->string('name');
+            $table->enum('status', ['ongoing', 'finished', 'suspended'])->default('ongoing');
+            $table->integer('user_count');
             $table->timestamps();
         });
 
-        Schema::create('players', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('game_id')->constrained()->onDelete('cascade');
-            $table->string('discord_name');
-            $table->string('discord_id')->unique();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
-        });
-
+        //Per un eventuale sviluppo futuro
         Schema::create('character_sheets', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -48,7 +47,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('game_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['spell', 'skill', 'characteristic']);
+            $table->enum('type', ['spell', 'skill', 'characteristic','equipment']);
             $table->timestamps();
         });
     }
@@ -58,15 +57,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('race');
-            $table->dropColumn('class');
-            $table->dropColumn('level');
-            $table->dropColumn('alignment');
-        });
+
         Schema::dropIfExists('games');
-        Schema::dropIfExists('players');
-        Schema::dropIfExists('character_sheets');
+        Schema::dropIfExists('characters');
+        Schema::dropIfExists('character_sheet');
         Schema::dropIfExists('shows');
     }
 };

@@ -1,11 +1,8 @@
 <?php
 
-namespace App\Domains\Players\Actions;
+namespace App\Domains\User\Actions;
 
-use App\Models\Game;
-use App\Models\Player;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
+
 use Illuminate\Support\Str;
 
 

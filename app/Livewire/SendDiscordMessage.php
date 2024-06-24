@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\Player;
 use App\Livewire\Forms\DiscordMessageForm;
+use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -11,7 +11,7 @@ use LivewireUI\Modal\ModalComponent;
 
 class SendDiscordMessage extends ModalComponent
 {
-    public Player $player;
+    public User $player;
     public DiscordMessageForm $form;
 
     public function send(): void

@@ -28,8 +28,6 @@ class LoginLinkNotification extends Notification
 
     public function toDiscord($notifiable): DiscordMessage
     {
-
-
         $loginLink = $notifiable->generateLoginLink();
 
         $embed = [

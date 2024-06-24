@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Forms;
 
-use App\Models\Player;
+use App\Models\User;
 use App\Notifications\PrivateDiscordMessage;
 use Livewire\Form;
 
@@ -17,7 +17,7 @@ class DiscordMessageForm extends Form
         'message' => 'required|string|max:255',
     ];
 
-    public function send(Player $player): void
+    public function send(User $player): void
     {
        $player->notify(new PrivateDiscordMessage($this->message));
 

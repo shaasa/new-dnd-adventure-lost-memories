@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domains\Players\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 
 use App\Http\Controllers\Controller;
-use App\Models\Player;
+use App\Models\User;
 use App\Notifications\PrivateDiscordMessage;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -12,14 +12,14 @@ use Illuminate\Foundation\Application;
 
 
 
-class PlayerDiscordController extends Controller
+class UserDiscordController extends Controller
 {
     public function discord(int $playerId): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
     {
         return view('players.discord');
     }
 
-    public function sendDiscordMessage(Player $player, string $message): bool
+    public function sendDiscordMessage(User $player, string $message): bool
     {
         try {
 

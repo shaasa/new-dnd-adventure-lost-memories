@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Player;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -20,21 +19,11 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('admin', function ($user) {
     return (int)$user->is_admin === 1;
 });
-Broadcast::channel('App.Models.Player.{id}', function ($player, $id) {
-    return (int)$player->id === (int)$id;
-});
+
 Broadcast::channel('App.Models.Game.{gameId}', function ($user, $gameId) {
-    $player = Player::where('user_id', $user->id)
-                    ->where('game_id', $gameId)
-                    ->first();
 
-    if ($player) {
-        return ['id' => $user->id, 'name' => $user->name, 'gameId' => $gameId, 'playerId' => $player->id, 'is_admin' => false];
+    if ($user) {
+        return ['id' => $user->id, 'name' => $user->name, 'gameId' => $gameId, 'is_admin' => false];
     }
-
-    if ($user->is_admin) {
-        return ['id' => $user->id, 'name' => $user->name, 'gameId' => $gameId, 'is_admin' => true];
-    }
-
     return false;
 });

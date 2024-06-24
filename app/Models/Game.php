@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -20,7 +21,7 @@ use Illuminate\Support\Carbon;
  * @property string $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection<int, Player> $players
+ * @property-read Collection<int, User> $users
  * @method static Builder|Game newModelQuery()
  * @method static Builder|Game newQuery()
  * @method static Builder|Game query()
@@ -39,8 +40,18 @@ class Game extends Model
     protected $table = 'games';
     protected $fillable = ['players_count', 'status', 'name'];
 
-    public function players(): HasMany
+    public function users(): BelongsToMany
     {
-        return $this->hasMany(Player::class);
+        return $this->belongsToMany(User::class, 'users_games_characters');
+    }
+
+    public function characters(): BelongsToMany
+    {
+        return $this->belongsToMany(Character::class, 'users_games_characters');
+    }
+
+    public function shows(): HasMany
+    {
+        return $this->hasMany(Show::class);
     }
 }

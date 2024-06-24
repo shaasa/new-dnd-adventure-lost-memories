@@ -1,13 +1,13 @@
 <?php
 
-use App\Domains\Games\Http\Controllers\GameController;
-use App\Domains\Players\Http\Controllers\PlayerCrudController;
-use App\Domains\Players\Http\Controllers\PlayerDiscordController;
-use App\Domains\Players\Http\Controllers\PlayerGameController;
-use App\Domains\Players\Http\Controllers\PlayerLoginController;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Game\GameController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\User\UserDiscordController;
+use App\Http\Controllers\User\UserGameController;
+use App\Http\Controllers\User\UserLoginController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -42,7 +42,7 @@ Route::get('/', [WelcomeController::class, 'gamesList'])->name('welcome');
 Route::get('dashboard', [DashboardController::class, 'dashboard'])
      ->middleware(['auth', 'verified'])
      ->name('dashboard');
-Route::get('dashboard/{player}/player', [DashboardController::class, 'dashboardPlayer'])
+Route::get('dashboard/{user}/user', [DashboardController::class, 'dashboardPlayer'])
      ->middleware(['auth', 'verified'])
      ->name('dashboard-player');
 
@@ -54,17 +54,19 @@ Route::get('/images/{imageName}', [ImageController::class, 'show'])->name('image
 Route::get('/images/sheet/{imageName}', [ImageController::class, 'showSheet'])->name('image.sheet.show');
 Route::get('verify-login/{token}', [AuthController::class, 'verifyLogin'])->name('verify-login');
 
+
+
+
 Route::prefix('admin')->middleware(['auth.admin', 'verified'])->group(function () {
+    Route::resource(\App\Http\Controllers\User\UserCrudController::class)->except(['show']);
     Route::post('/game/insert', [GameController::class, 'insert'])->name('game.insert');
     Route::put('/game/{game_id}/update', [GameController::class, 'update'])->name('game.update');
     Route::get('/game/{game}', [GameController::class, 'page'])->name('game.page');
-    Route::post('/player/insert', [PlayerCrudController::class, 'insert'])->name('player.insert');
-    Route::put('/player/{player}/update', [PlayerCrudController::class, 'update'])->name('player.update');
-    Route::get('/player/{player}/delete', [PlayerCrudController::class, 'delete'])->name('player.delete');
-    Route::get('/player/{player}/refreshToken', [PlayerLoginController::class, 'refreshToken'])->name('player.refresh-token');
-    Route::get('/player/{player}/sendToken', [PlayerLoginController::class, 'sendToken'])->name('player.send-token');
-    Route::post('/player/{player}/discord/sendMessage', [PlayerDiscordController::class, 'sendDiscordMessage'])->name('player.discord.send-message');
-    Route::get('/player/{player}/{fase}/show', [PlayerGameController::class, 'toggle'])->name('player.show');
+
+    Route::get('/player/{user}/refreshToken', [UserLoginController::class, 'refreshToken'])->name('player.refresh-token');
+    Route::get('/player/{user}/sendToken', [UserLoginController::class, 'sendToken'])->name('player.send-token');
+    Route::post('/player/{user}/discord/sendMessage', [UserDiscordController::class, 'sendDiscordMessage'])->name('player.discord.send-message');
+    Route::get('/player/{user}/{fase}/{game}/show', [UserGameController::class, 'toggle'])->name('player.show');
 });
 require __DIR__ . '/auth.php';
 
