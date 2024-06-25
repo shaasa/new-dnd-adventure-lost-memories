@@ -92,6 +92,31 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function scopeForGame(Builder $query, $gameId): Builder
+    {
+        return $query->whereHas('games', function ($q) use ($gameId) {
+            $q->where('games.id', $gameId);
+        })->with('characters');
+    }
+
+    public function scopeNotInGame(Builder $query, $gameId): Builder
+    {
+        return $query->whereDoesntHave('games', function ($q) use ($gameId) {
+            $q->where('games.id', $gameId);
+        });
+    }
+
+    public function scopeIsPlayer(Builder $query): Builder
+    {
+        return $query->where('is_admin', 0);
+    }
+
+    public function scopeIsMaster(Builder $query): Builder
+    {
+        return $query->where('is_admin', 1);
+    }
+
+
     /**
      * The attributes that should be cast.
      *

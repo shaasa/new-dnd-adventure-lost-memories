@@ -26,7 +26,7 @@ final readonly class UserCreateDTO
             'password_confirmation' => $this->password_confirmation,
             'discord_id' => $this->discord_id,
             'discord_name' => $this->discord_name,
-            'discord_private_chanel_id' => $this->discord_private_chanel_id,
+            'discord_private_channel_id' => $this->discord_private_chanel_id,
             'is_admin' => $this->is_admin,
             'token' => $this->token,
         ];

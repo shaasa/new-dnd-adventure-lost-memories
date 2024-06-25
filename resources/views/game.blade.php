@@ -51,8 +51,8 @@
                     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                         {{ucfirst(__('game.players'))}}
                     </h2>
-                    @if($game->players()->count() === 0)
-                    {{__('game.no players')}}
+                    @if($players->count() === 0)
+                        {{__('game.no players')}}
                     @else
                         <table class="table-auto w-full mb-6 text-gray-300 dark:bg-gray-800">
                             <thead class="bg-gray-900 text-white">
@@ -66,10 +66,9 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($game->players as $player)
+                            @foreach($players as $player)
                                 @php
-                                    $user = $player->user;
-                                    $shows = \App\Models\Show::where('user_id',$user->id)->where('game_id', $game->id)->get();
+                                    $shows = \App\Models\Show::where('user_id',$player->id)->where('game_id', $game->id)->get();
                                     $s = [];
                                     foreach ($shows as $show){
                                         $color = $show->show ? ['style'=>'color:green'] :[];
@@ -84,7 +83,7 @@
                                     </td>
                                     <td class="border px-4 py-2">{{ $player->discord_id }}</td>
                                     <td class="border px-4 py-2">{{ $player->discord_name }}</td>
-                                    <td class="border px-4 py-2">{{ $player->user->name }}/{{ $player->user->class }}/{{ $player->user->race }}</td>
+                                    <td class="border px-4 py-2">{{ $player->characters()->name }}/{{ $player->characters()->class }}/{{ $player->characters()->race }}</td>
                                     <td class="border px-4 py-2">
                                         <a href="{{route('player.delete', ['player' => $player->id, 'game_id'=>$game->id])}}" class="float-left"> {{ svg('fas-trash-alt', 'size-5 sm:size-6' ) }}</a>
 
@@ -102,13 +101,34 @@
                             </tbody>
                         </table>
                     @endif
-                    @if($game->players->count() < $game->players_count)
+                    @if($game->users->count() < $game->players_count)
                         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                             {{__('game.new')}} {{__('game.player')}}
                         </h2>
 
                         <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">
-                            <form method="POST" action="{{ route('player.insert') }}">
+                            <form method="POST" action="{{ route('player.game.attach') }}">
+                                @csrf
+                                <input type="hidden" name="game_id" value="{{$game->id}}">
+                                <div class="form-group mt-4">
+                                    <label for="user_id"
+                                           class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Stato</label>
+                                    <select id="user_id" name="user_id"
+                                            class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md"
+                                            required>
+                                        <option value="">Select a user</option>
+                                        @foreach($users as $user)
+                                            <option value="{{$user->id}}">{{$user->name}}/{{$user->discord_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <button type="submit"
+                                        class="btn mt-4 inline-flex items-center justify-center px-5 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-black bg-blue-400 hover:bg-blue-300 focus:outline-none focus:border-blue-500 focus:shadow-outline-blue active:bg-blue-500 transition duration-150 ease-in-out">
+                                    Let's play
+                                </button>
+                            </form>
+                            <hr>
+                            <form method="POST" action="{{ route('player.store') }}">
                                 @csrf
                                 <input type="hidden" name="game_id" value="{{$game->id}}">
                                 <div class="form-group">
@@ -145,7 +165,7 @@
                             <div class="form-group">
                                 <label for="name"
                                        class="block text-gray-300 dark:text-gray-500 text-sm font-medium">{{ucfirst(__('game.name'))}} {{__('game.game')}}
-                                    </label>
+                                </label>
                                 <input type="text"
                                        class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md"
                                        id="name" name="name" value="{{$game->name}}"

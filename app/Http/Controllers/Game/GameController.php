@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Game;
 use App\Enums\GameStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Game;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -37,11 +38,12 @@ class GameController extends Controller
         return redirect()->route('dashboard');
     }
 
-    public function show(Game $game): Application|Factory|View|\Illuminate\Foundation\Application
+    public function page(Game $game): Application|Factory|View|\Illuminate\Foundation\Application
     {
-        $players = $game->users();
+        $players = User::forGame($game->id)->get();
+        $users =  User::isPlayer()->notInGame($game->id)->get();
 
-        return view('game', ['game' => $game]);
+        return view('game', ['game' => $game, 'players' => $players, 'users' => $users]);
     }
 
     public function update(Request $request): RedirectResponse

@@ -6,6 +6,7 @@ use App\Domains\User\Requests\UserCreateRequest;
 use App\Domains\User\Requests\UserUpdateRequest;
 use App\Domains\User\Services\UserService;
 use App\Http\Controllers\Controller;
+use App\Models\Game;
 use App\Models\User;
 
 class UserCrudController extends Controller
@@ -32,9 +33,13 @@ class UserCrudController extends Controller
      */
     public function store(UserCreateRequest $request, UserService $service)
     {
-        $data = $request->validated();
-        $service->create($request);
 
+        $service->create($request);
+        $gameId = $request->get('game_id');
+        $players = User::forGame($gameId)->get();
+        $users =  User::isPlayer()->notInGame($gameId)->get();
+
+        return view('game', ['game' => Game::find($gameId), 'players' => $players, 'users' => $users]);
     }
 
     /**

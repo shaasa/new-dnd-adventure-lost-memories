@@ -18,6 +18,7 @@ class CharactersSeeder extends Seeder
                                         'id' => 1,
                                        'name' => 'Beatrice',
                                        'email' => 'info@beatriceweb.it',
+                                       'email_verified_at' => now(),
                                        'password' => bcrypt('silvestro1'),
                                        'is_admin' => true,
                                    ]);

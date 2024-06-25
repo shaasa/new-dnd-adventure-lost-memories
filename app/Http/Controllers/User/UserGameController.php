@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\User;
 
 
+use App\Domains\User\Requests\UserGameRequest;
+use App\Domains\User\Services\UserService;
 use App\Enums\TypeEnum;
 use App\Events\ToggleCharacterSheet;
 use App\Http\Controllers\Controller;
@@ -41,5 +43,11 @@ class UserGameController extends Controller
 
     }
 
+    public function attachUserGame(UserGameRequest $request, UserService $service): RedirectResponse
+    {
+        $data = $request->all();
+        $player = $service->attachUserGame($data['user_id'], $data['game_id']);
+        return redirect()->route('player.page', ['player' => $player]);
+    }
 
 }

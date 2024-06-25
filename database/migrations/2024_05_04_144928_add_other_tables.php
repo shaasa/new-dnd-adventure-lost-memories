@@ -30,7 +30,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('status', ['ongoing', 'finished', 'suspended'])->default('ongoing');
-            $table->integer('user_count');
+            $table->integer('players_count');
             $table->timestamps();
         });
 
@@ -48,6 +48,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('game_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['spell', 'skill', 'characteristic','equipment']);
+            $table->boolean('show')->default(false);
             $table->timestamps();
         });
     }

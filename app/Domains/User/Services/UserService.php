@@ -22,7 +22,9 @@ class UserService
     public function create(UserCreateRequest $request): void
     {
         $generateToken = app(GenerateToken::class);
-        $data = $request->validated();
+        $data = $request->all();
+        $discordPrivateChannelId = app(Discord::class)->getPrivateChannel($data['discord_id']);
+        ray($discordPrivateChannelId);
         $dto = new UserCreateDTO(
             $data['name'],
             $data['name'] . '@beatriceweb.it',
@@ -30,14 +32,17 @@ class UserService
             'ps' . $data['name'] . '-1',
             $data['discord_id'],
             $data['discord_name'],
-            app(Discord::class)->getPrivateChannel($data['discord_id']),
-            $data['is_admin'],
+            $discordPrivateChannelId,
+            $data['is_admin'] ?? 0,
             $generateToken->execute()
         );
-        User::create(
+        $user = User::create(
             $dto->toArray()
         );
-
+        if ($data['game_id'] !== null) {
+            $game = Game::find($data['game_id']);
+            $this->playGame($user, $game);
+        }
     }
 
     public function playGame(User $user, Game $game): void
@@ -49,10 +54,10 @@ class UserService
                 throw new \RuntimeException('Non è stato possibile trovare un personaggio adeguato');
             }
 
-            $user->games()->attach($game->id,['character_id' => $character->id]) ;
+            $user->games()->attach($game->id, ['character_id' => $character->id], true);
             foreach (TypeEnum::cases() as $type) {
                 Show::create([
-                    'user_id' => $character->id,
+                    'user_id' => $user->id,
                     'type' => $type->value,
                     'game_id' => $game->id,
                     'show' => false
@@ -67,5 +72,13 @@ class UserService
     {
         $data = $request->validated();
         $user->update($data);
+    }
+
+    public function attachUserGame(int $user_id, int $game_id)
+    {
+        $user = User::find($user_id);
+        $game = Game::find($game_id);
+        $this->playGame($user, $game);
+        return $user;
     }
 }

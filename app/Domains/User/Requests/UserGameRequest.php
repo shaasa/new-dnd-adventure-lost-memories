@@ -6,7 +6,7 @@ use App\Domains\User\Data\UserCreateDTO;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserCreateRequest extends FormRequest
+class UserGameRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +25,8 @@ class UserCreateRequest extends FormRequest
     {
         return [
             [
-                'name' => 'string|required|max:255',
-                'game_id' => 'nullable|integer|exists:games,id', // 'character_id' => 'integer|exists:characters,id
-                'discord_id' => 'required|integer',
-                'discord_name' => 'required|string|max:255',
-                'is_admin' => 'nullable|boolean',
+                'user_id' => 'required|integer|exists:users,id',
+                'game_id' => 'required|integer|exists:games,id'
             ]
         ];
     }
