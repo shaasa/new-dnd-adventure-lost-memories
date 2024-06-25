@@ -83,7 +83,7 @@
                                     </td>
                                     <td class="border px-4 py-2">{{ $player->discord_id }}</td>
                                     <td class="border px-4 py-2">{{ $player->discord_name }}</td>
-                                    <td class="border px-4 py-2">{{ $player->characters()->name }}/{{ $player->characters()->class }}/{{ $player->characters()->race }}</td>
+                                    <td class="border px-4 py-2">{{ $player->characters->name }}/{{ $player->characters()->class }}/{{ $player->characters->race }}</td>
                                     <td class="border px-4 py-2">
                                         <a href="{{route('player.delete', ['player' => $player->id, 'game_id'=>$game->id])}}" class="float-left"> {{ svg('fas-trash-alt', 'size-5 sm:size-6' ) }}</a>
 
