@@ -12,18 +12,25 @@ use Illuminate\Support\Facades\Broadcast;
 | used to check if an authenticated user can listen to the channel.
 |
 */
-
+Log::info('Entering channels.php file');
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int)$user->id === (int)$id;
-});
-Broadcast::channel('admin', function ($user) {
-    return (int)$user->is_admin === 1;
+    Log::info('Entering App.Models.User.{id}');
+    return (int)$user->id === (int)$id || $user->isAdmin();
 });
 
 Broadcast::channel('App.Models.Game.{gameId}', function ($user, $gameId) {
-
-    if ($user) {
-        return ['id' => $user->id, 'name' => $user->name, 'gameId' => $gameId, 'is_admin' => false];
+    Log::info("Attempting to authorize channel for Game ID: {$gameId}, User ID: {$user->id}");
+    if (!$user) {
+        ray($user);
+        return false;
+    }
+    try {
+        if ($user->isAdmin() || $user->games()->where('id', $gameId)->exists()) {
+            return ['id' => $user->id, 'name' => $user->name, 'gameId' => $gameId, 'is_admin' => $user->is_admin];
+        }
+    } catch (\Exception $e) {
+        ray($e->getMessage());
+        Log::error('Errore nell\'autorizzazione del canale: ' . $e->getMessage());
     }
     return false;
 });

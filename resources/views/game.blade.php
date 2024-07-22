@@ -11,30 +11,32 @@
                 alert('Messaggio inviato con successo!');
             });
         });
+        const token = '{{ $authToken }}';
+        localStorage.setItem('authToken', token);
         document.addEventListener('DOMContentLoaded', function (callback) {
 
             Echo.join('App.Models.Game.{{$game->id}}')
                 .here((user) => {
                     user.forEach((user) => {
                         if (!user.is_admin) {
-                            const element = document.getElementById('player' + player.id);
+                            const element = document.getElementById('player' + user.id);
                             if (element) {
                                 element.style.color = 'green'; // cambia questo al colore che vuoi
                             }
                         }
                     })
                 })
-                .joining((player) => {
-                    if (player.id !== 'admin') {
-                        const element = document.getElementById('player' + player.id);
+                .joining((user) => {
+                    if (user.id !== 'admin') {
+                        const element = document.getElementById('player' + user.id);
                         if (element) {
                             element.style.color = 'green'; // cambia questo al colore che vuoi
                         }
                     }
                 })
-                .leaving((player) => {
-                    if (player.id !== 'admin') {
-                        const element = document.getElementById('player' + player.id);
+                .leaving((user) => {
+                    if (user.id !== 'admin') {
+                        const element = document.getElementById('player' + user.id);
                         if (element) {
                             element.style.color = 'grey'; // cambia questo al colore che vuoi
                         }
@@ -121,11 +123,12 @@
                         </table>
                     @endif
                     @if($game->users->count() < $game->players_count)
-                        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                            {{__('game.new')}} {{__('game.player')}}
-                        </h2>
+
 
                         <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">
+                            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                                Abbina giocatore
+                            </h2>
                             <form method="POST" action="{{ route('player.game.attach') }}">
                                 @csrf
                                 <input type="hidden" name="game_id" value="{{$game->id}}">
@@ -147,7 +150,12 @@
                                     Let's play
                                 </button>
                             </form>
-                            <hr>
+
+                            <hr  style="margin:10px auto 10px auto">
+                            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                                {{__('game.new')}} {{__('game.player')}}
+                            </h2>
+
                             <form method="POST" action="{{ route('player.store') }}">
                                 @csrf
                                 <input type="hidden" name="game_id" value="{{$game->id}}">

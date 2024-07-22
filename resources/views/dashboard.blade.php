@@ -17,7 +17,8 @@
         </h2>
     </x-slot>
     <script>
-
+        const token = '{{ $authToken }}';
+        localStorage.setItem('authToken', token);
         document.addEventListener('DOMContentLoaded', function () {
 
         })

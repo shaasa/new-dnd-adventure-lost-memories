@@ -28,17 +28,18 @@ class AuthController extends Controller
         return redirect()->back();
     }
 
-    public function verifyLogin(Request $request,string $token, Game $game): Application|Factory|View|\Illuminate\Foundation\Application|\Illuminate\View\View
+    public function verifyLogin(Request $request, string $token, Game $game): Application|Factory|View|\Illuminate\Foundation\Application|\Illuminate\View\View
     {
         $player = User::where('token', $token)->firstOrFail();
         abort_unless($request->hasValidSignature() && $token, 401);
 
         Auth::login($player);
+        $authToken = $player->createToken('authToken')->plainTextToken;
         if ($player->getRedirectRoute() === 'admin') {
-            ray('pippo');
-            return view('dashboard');
+
+            return view('dashboard', compact('authToken'));
         }
-        ray('minnie');
-        return view('dashboard-player', ['game' => $game]);
+
+        return view('dashboard-player', ['game' => $game], compact('authToken'));
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 
-use App\Domains\User\Actions\GamePageAttributes;
 use App\Domains\User\Requests\UserGameRequest;
 use App\Domains\User\Services\UserService;
 use App\Enums\TypeEnum;
@@ -24,7 +23,7 @@ class UserGameController extends Controller
         return redirect()->route('game.page', ['game' => $game->id]);
     }
 
-    public function toggle(User $user, Game $game, TypeEnum $fase): RedirectResponse
+    public function toggle(User $user, TypeEnum $fase, Game $game): RedirectResponse
     {
 
         try {
@@ -33,10 +32,10 @@ class UserGameController extends Controller
                         ->where('type', $fase->value)
                         ->first();
 
+            ray($show);
             $toggle = !$show?->show;
-
+            ray($toggle);
             $show?->update(['show' => $toggle]);
-
             ToggleCharacterSheet::dispatch($user, $fase, $toggle);
 
             return redirect()->route('game.page', ['game' => $game->id]);

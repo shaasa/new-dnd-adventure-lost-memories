@@ -14,13 +14,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Broadcast::routes();
+Route::middleware(['web', 'auth'])->group(function () {
+    Broadcast::routes();
+});
 
-Route::post('/broadcasting/auth', function (Request $request) {
+Route::get('/broadcasting/auth', function (Request $request) {
     $user = Auth::user();
-// Debugging la richiesta
-    ray($request->all());
-
+    Log::info('Broadcasting auth route');
     if ($user) {
         $response =
             [
@@ -29,28 +29,26 @@ Route::post('/broadcasting/auth', function (Request $request) {
                     'name' => $user->name,
                 ]
             ];
-
-        Log::info('Authorization response: ' . json_encode($response, JSON_THROW_ON_ERROR));
         return new JsonResponse($response);
     }
 
     return new JsonResponse([], 403);
-});
+})->middleware(['auth'])->name('broadcast.auth');
 
 Route::get('/', [WelcomeController::class, 'gamesList'])->name('welcome');
 //Dashboard admin
 Route::get('dashboard', [DashboardController::class, 'dashboard'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+     ->middleware(['auth', 'verified'])
+     ->name('dashboard');
 
 //Dashboard player
 Route::get('dashboard-player/{game}', [DashboardController::class, 'dashboardPlayer'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard-player');
+     ->middleware(['auth', 'verified'])
+     ->name('dashboard-player');
 
 Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+     ->middleware(['auth'])
+     ->name('profile');
 
 Route::get('/images/{imageName}', [ImageController::class, 'show'])->name('image.show');
 Route::get('/images/sheet/{imageName}', [ImageController::class, 'showSheet'])->name('image.sheet.show');

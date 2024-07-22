@@ -24,41 +24,36 @@
         </h2>
     </x-slot>
     <script>
+        const token = '{{ $authToken }}';
+        localStorage.setItem('authToken', token);
         document.addEventListener('DOMContentLoaded', function () {
-            const playerId = '{{ $user->id }}';
+            const userId = '{{ $user->id }}';
             const gameId = '{{ $game->id }}';
-            const userSpells = '{{ $user->spells }}' === 1;
+            const userSpells = {{ $user->spells ? 'true' : 'false' }};
 
-            console.log('Subscribing to player channel: App.Models.Player.'+playerId);
-            console.log('Joining game channel: App.Models.Game.${gameId}');
+            Echo.channel(`App.Models.User.${userId}`)
 
-            Echo.channel('App.Models.Player.'+playerId)
                 .listen('ToggleCharacterSheet', (e) => {
                     console.log('ToggleCharacterSheet event received:', e);
-                    if (e.show) {
-                        if (e.sheetPart === 'spell') {
-                            if (userSpells) {
-                                document.getElementById(e.sheetPart).style.display = 'block';
-                            }
-                            document.getElementById('tutta').style.display = 'block';
-                        } else {
-                            document.getElementById(e.sheetPart).style.display = 'block';
+                    const element = document.getElementById(e.sheetPart);
+                    const tuttaElement = document.getElementById('tutta');
+
+                    if (e.sheetPart === 'spell') {
+                        if (userSpells) {
+                            element.style.display = e.show ? 'block' : 'none';
                         }
+                        tuttaElement.style.display = e.show ? 'block' : 'none';
                     } else {
-                        if (e.sheetPart === 'spell') {
-                            if (userSpells) {
-                                document.getElementById(e.sheetPart).style.display = 'none';
-                            }
-                            document.getElementById('tutta').style.display = 'none';
-                        } else {
-                            document.getElementById(e.sheetPart).style.display = 'none';
-                        }
+                        element.style.display = e.show ? 'block' : 'none';
                     }
+                })
+                .error((error) => {
+                    console.error(`Error subscribing to user channel: App.Models.User.${userId}`, error);
                 });
 
-            Echo.join('App.Models.Game.'+gameId)
+            Echo.join(`App.Models.Game.${gameId}`)
                 .here((users) => {
-                    console.log('Current users in the channel:', users);
+                    console.log('Users already in the channel:', users);
                 })
                 .joining((user) => {
                     console.log('User joined:', user);
@@ -67,13 +62,12 @@
                     console.log('User left:', user);
                 })
                 .error((error) => {
-                    console.error('Error joining game channel: ' + 'App.Models.Game.' + gameId, error);
+                    console.error(`Error joining game channel: App.Models.Game.${gameId}`, error);
                 })
                 .listen('NewMessage', (e) => {
                     console.log('NewMessage event received:', e);
                 });
         });
-
 
 
         /*document.addEventListener('DOMContentLoaded', function () {

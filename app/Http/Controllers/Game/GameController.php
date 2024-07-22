@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class GameController extends Controller
@@ -41,8 +42,10 @@ class GameController extends Controller
 
     public function page(Game $game): Application|Factory|View|\Illuminate\Foundation\Application
     {
+        $user = Auth::user();
+        $authToken = $user?->createToken('authToken')->plainTextToken;
         [$players, $users] =  app(GamePageAttributes::class)->execute($game->id);
-        return view('game', ['game' => $game, 'players' => $players, 'users' => $users]);
+        return view('game', ['game' => $game, 'players' => $players, 'users' => $users, 'authToken' => $authToken]);
     }
 
     public function update(Request $request): RedirectResponse

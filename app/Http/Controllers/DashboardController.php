@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 
 
 class DashboardController extends Controller
@@ -21,13 +22,15 @@ class DashboardController extends Controller
     public function dashboard(): Application|Factory|\Illuminate\Foundation\Application|View
     {
         $games = app(GameQuery::class)->gamesListWithPlayersNumber()->get();
-
-        return view('dashboard', compact('games'));
+        $user = Auth::user();
+        $authToken = $user?->createToken('authToken')->plainTextToken;
+        return view('dashboard',['authToken' => $authToken], compact('games'));
     }
 
     public function dashboardPlayer(Game $game): Application|Factory|\Illuminate\Foundation\Application|View
     {
-
-        return view('dashboard-player', compact('game'));
+        $user = Auth::user();
+        $authToken = $user?->createToken('authToken')->plainTextToken;
+        return view('dashboard-player', ['game' => $game],compact('authToken'));
     }
 }

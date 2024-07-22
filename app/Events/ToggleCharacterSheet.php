@@ -30,6 +30,7 @@ class ToggleCharacterSheet implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
+        \Log::info('Messaggio sul canale '.'App.Models.User.' . $this->user->id);
         return new Channel('App.Models.User.' . $this->user->id);
     }
 }

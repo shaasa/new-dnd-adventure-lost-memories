@@ -18,7 +18,7 @@ class NewMessage implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(public Game $game, public string $message, public User $player)
+    public function __construct(public Game $game, public string $message)
     {
         //
     }
