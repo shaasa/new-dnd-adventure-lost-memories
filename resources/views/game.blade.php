@@ -5,7 +5,12 @@
         </h2>
     </x-slot>
     <script>
-
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('messageSent', (event) => {
+                // Mostra un messaggio di conferma
+                alert('Messaggio inviato con successo!');
+            });
+        });
         document.addEventListener('DOMContentLoaded', function (callback) {
 
             Echo.join('App.Models.Game.{{$game->id}}')
@@ -39,7 +44,7 @@
                     console.log('NewMessage event received:', e);
                 })
                 .error((error) => {
-                    console.error(error);
+                    console.log(error);
                 });
 
         });
@@ -61,19 +66,26 @@
                                 <th class="border px-4 py-2">{{__('game.name')}}</th>
                                 <th class="border px-4 py-2">Discord id</th>
                                 <th class="border px-4 py-2">{{__('game.discord name')}}</th>
-                                <th class="border px-4 py-2">{{__('game.character')}}/{{__('game.class')}}/{{__('game.race')}}</th>
+                                <th class="border px-4 py-2">{{__('game.character')}}/{{__('game.class')}}
+                                    /{{__('game.race')}}</th>
                                 <th class="border px-4 py-2">{{__('game.actions')}}</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($players as $player)
                                 @php
-                                    $shows = \App\Models\Show::where('user_id',$player->id)->where('game_id', $game->id)->get();
-                                    $s = [];
-                                    foreach ($shows as $show){
-                                        $color = $show->show ? ['style'=>'color:green'] :[];
-                                        $s[$show->type] = $color;
-                                    }
+
+                                        $character = $player->characters()->wherePivot('game_id',$game->id)->first();
+                                        foreach ($player->characters as $ch){
+                                        $character = $ch;
+                                        break;
+                                        }
+                                        $shows = \App\Models\Show::where('user_id',$player->id)->where('game_id', $game->id)->get();
+                                        $s = [];
+                                        foreach ($shows as $show){
+                                            $color = $show->show ? ['style'=>'color:green'] :[];
+                                            $s[$show->type] = $color;
+                                        }
                                 @endphp
                                 <tr class="text-center bg-gray-700 hover:bg-gray-600">
                                     <td class="border px-4 py-2"> {{ svg('fas-circle', 'size-5 sm:size-6', ['id'=>'player'.$player->id, 'style'=>'color:grey']) }}</td>
@@ -83,18 +95,25 @@
                                     </td>
                                     <td class="border px-4 py-2">{{ $player->discord_id }}</td>
                                     <td class="border px-4 py-2">{{ $player->discord_name }}</td>
-                                    <td class="border px-4 py-2">{{ $player->characters->name }}/{{ $player->characters()->class }}/{{ $player->characters->race }}</td>
+                                    <td class="border px-4 py-2">{{ $character->name }}/{{ $character->class }}
+                                        /{{ $character->race }}</td>
                                     <td class="border px-4 py-2">
-                                        <a href="{{route('player.delete', ['player' => $player->id, 'game_id'=>$game->id])}}" class="float-left"> {{ svg('fas-trash-alt', 'size-5 sm:size-6' ) }}</a>
+                                        <a href="{{route('player.delete', ['user' => $player->id, 'game'=>$game->id])}}"
+                                           class="float-left"> {{ svg('fas-trash-alt', 'size-5 sm:size-6' ) }}</a>
 
                                         <button onclick="Livewire.dispatch('openModal', { component: 'send-discord-message', arguments: { player: {{ $player->id }} }})">{{ svg('fas-message', 'size-5 sm:size-6' ) }}</button>
 
 
-                                        <a href="{{route('player.send-token', ['player' => $player->id])}}" class="float-left"> {{ svg('fas-link', 'size-5 sm:size-6 ml-4', ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'equipment'])}}" class="float-left"> {{ svg('phosphor-sword-bold', 'size-5 sm:size-6 ml-4', $s['equipment']) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'characteristic'])}}" class="float-left"> {{ svg('fas-person', 'size-5 sm:size-6 ml-4',$s['characteristic'] ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'skill'])}}" class="float-left"> {{ svg('fas-dice-d20', 'size-5 sm:size-6 ml-4',$s['skill'] ) }}</a>
-                                        <a href="{{route('player.show', ['player' => $player->id, 'fase' => 'spell'])}}" class="float-left"> {{ svg('fas-book-bookmark', 'size-5 sm:size-6 ml-4', $s['spell']) }}</a>
+                                        <a href="{{route('player.send-token', ['user' => $player->id, 'game'=>$game->id])}}"
+                                           class="float-left"> {{ svg('fas-link', 'size-5 sm:size-6 ml-4', ) }}</a>
+                                        <a href="{{route('player.show', ['user' => $player->id, 'fase' => 'equipment', 'game'=>$game->id])}}"
+                                           class="float-left"> {{ svg('phosphor-sword-bold', 'size-5 sm:size-6 ml-4', $s['equipment']) }}</a>
+                                        <a href="{{route('player.show', ['user' => $player->id, 'fase' => 'characteristic', 'game'=>$game->id])}}"
+                                           class="float-left"> {{ svg('fas-person', 'size-5 sm:size-6 ml-4',$s['characteristic'] ) }}</a>
+                                        <a href="{{route('player.show', ['user' => $player->id, 'fase' => 'skill', 'game'=>$game->id])}}"
+                                           class="float-left"> {{ svg('fas-dice-d20', 'size-5 sm:size-6 ml-4',$s['skill'] ) }}</a>
+                                        <a href="{{route('player.show', ['user' => $player->id, 'fase' => 'spell', 'game'=>$game->id])}}"
+                                           class="float-left"> {{ svg('fas-book-bookmark', 'size-5 sm:size-6 ml-4', $s['spell']) }}</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -118,7 +137,8 @@
                                             required>
                                         <option value="">Select a user</option>
                                         @foreach($users as $user)
-                                            <option value="{{$user->id}}">{{$user->name}}/{{$user->discord_name}}</option>
+                                            <option value="{{$user->id}}">{{$user->name}}
+                                                /{{$user->discord_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -132,18 +152,30 @@
                                 @csrf
                                 <input type="hidden" name="game_id" value="{{$game->id}}">
                                 <div class="form-group">
-                                    <label for="discord_id" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Discord ID</label>
-                                    <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="discord_id" name="discord_id" value="{{ old('discord_id') }}" required>
+                                    <label for="discord_id"
+                                           class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Discord
+                                        ID</label>
+                                    <input type="text"
+                                           class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md"
+                                           id="discord_id" name="discord_id" value="{{ old('discord_id') }}" required>
                                 </div>
 
                                 <div class="form-group mt-4">
-                                    <label for="discord_name" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Discord Name</label>
-                                    <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="discord_name" name="discord_name" value="{{ old('discord_name') }}" required>
+                                    <label for="discord_name"
+                                           class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Discord
+                                        Name</label>
+                                    <input type="text"
+                                           class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md"
+                                           id="discord_name" name="discord_name" value="{{ old('discord_name') }}"
+                                           required>
                                 </div>
 
                                 <div class="form-group mt-4">
-                                    <label for="name" class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Name</label>
-                                    <input type="text" class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md" id="name" name="name" value="{{ old('name') }}" required>
+                                    <label for="name"
+                                           class="block text-gray-300 dark:text-gray-500 text-sm font-medium">Name</label>
+                                    <input type="text"
+                                           class="form-control mt-1 block w-full py-2 px-3 border bg-gray-700 text-gray-300 border-gray-600 rounded-md"
+                                           id="name" name="name" value="{{ old('name') }}" required>
                                 </div>
 
                                 <button type="submit"

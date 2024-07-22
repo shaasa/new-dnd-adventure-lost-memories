@@ -38,11 +38,13 @@ Route::post('/broadcasting/auth', function (Request $request) {
 });
 
 Route::get('/', [WelcomeController::class, 'gamesList'])->name('welcome');
-
+//Dashboard admin
 Route::get('dashboard', [DashboardController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
-Route::get('dashboard/{user}/user', [DashboardController::class, 'dashboardPlayer'])
+
+//Dashboard player
+Route::get('dashboard-player/{game}', [DashboardController::class, 'dashboardPlayer'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard-player');
 
@@ -52,7 +54,7 @@ Route::view('profile', 'profile')
 
 Route::get('/images/{imageName}', [ImageController::class, 'show'])->name('image.show');
 Route::get('/images/sheet/{imageName}', [ImageController::class, 'showSheet'])->name('image.sheet.show');
-Route::get('verify-login/{token}', [AuthController::class, 'verifyLogin'])->name('verify-login');
+Route::get('verify-login/{token}/{game}', [AuthController::class, 'verifyLogin'])->name('verify-login');
 
 Route::prefix('admin')->middleware(['auth.admin', 'verified'])->group(function () {
     Route::post('/game/insert', [GameController::class, 'store'])->name('game.insert');
@@ -62,9 +64,10 @@ Route::prefix('admin')->middleware(['auth.admin', 'verified'])->group(function (
     Route::resource('player', UserCrudController::class);
     Route::post('/player/game/attach', [UserGameController::class, 'attachUserGame'])->name('player.game.attach');
     Route::get('/player/{user}/refreshToken', [UserLoginController::class, 'refreshToken'])->name('player.refresh-token');
-    Route::get('/player/{user}/sendToken', [UserLoginController::class, 'sendToken'])->name('player.send-token');
+    Route::get('/player/{user}/{game}/sendToken', [UserLoginController::class, 'sendToken'])->name('player.send-token');
     Route::post('/player/{user}/discord/sendMessage', [UserDiscordController::class, 'sendDiscordMessage'])->name('player.discord.send-message');
     Route::get('/player/{user}/{fase}/{game}/show', [UserGameController::class, 'toggle'])->name('player.show');
+    Route::get('/player/{user}/{game}/delete', [UserGameController::class, 'delete'])->name('player.delete');
 });
 require __DIR__ . '/auth.php';
 

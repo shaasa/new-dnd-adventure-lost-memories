@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Game;
 
 
+use App\Domains\User\Actions\GamePageAttributes;
 use App\Enums\GameStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Game;
@@ -40,9 +41,7 @@ class GameController extends Controller
 
     public function page(Game $game): Application|Factory|View|\Illuminate\Foundation\Application
     {
-        $players = User::forGame($game->id)->get();
-        $users =  User::isPlayer()->notInGame($game->id)->get();
-
+        [$players, $users] =  app(GamePageAttributes::class)->execute($game->id);
         return view('game', ['game' => $game, 'players' => $players, 'users' => $users]);
     }
 

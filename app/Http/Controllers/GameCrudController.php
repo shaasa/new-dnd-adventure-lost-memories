@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Enums\GameStatusEnum;
+use App\Http\Controllers\Game\GameController;
 use App\Models\Game;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -32,13 +33,6 @@ class GameCrudController extends Controller
             ray($exception->getMessage());
         }
         return redirect()->route('dashboard');
-    }
-
-    public function page(Game $game): Application|Factory|View|\Illuminate\Foundation\Application
-    {
-        $players = $game->users();
-
-        return view('game', ['game' => $game]);
     }
 
     public function update(Request $request): RedirectResponse

@@ -15,7 +15,7 @@ class ToggleCharacterSheet implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public function __construct(
-        public User $player,
+        public User $user,
         public TypeEnum $sheetPart,
         public bool $show
     ) {
@@ -30,6 +30,6 @@ class ToggleCharacterSheet implements ShouldBroadcast
      */
     public function broadcastOn(): Channel
     {
-        return new Channel('App.Models.User.' . $this->player->id);
+        return new Channel('App.Models.User.' . $this->user->id);
     }
 }

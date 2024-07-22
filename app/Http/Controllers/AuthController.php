@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Game;
 use App\Models\User;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -24,15 +28,17 @@ class AuthController extends Controller
         return redirect()->back();
     }
 
-    public function verifyLogin(Request $request, $token)
+    public function verifyLogin(Request $request,string $token, Game $game): Application|Factory|View|\Illuminate\Foundation\Application|\Illuminate\View\View
     {
         $player = User::where('token', $token)->firstOrFail();
         abort_unless($request->hasValidSignature() && $token, 401);
 
-        Auth::login($player->user);
-        if ($player->user->getRedirectRoute() === 'admin') {
-            return redirect('dashboard');
+        Auth::login($player);
+        if ($player->getRedirectRoute() === 'admin') {
+            ray('pippo');
+            return view('dashboard');
         }
-        return redirect()->route('dashboard-player', ['player' => $player]);
+        ray('minnie');
+        return view('dashboard-player', ['game' => $game]);
     }
 }

@@ -13,6 +13,9 @@ use App\Enums\TypeEnum;
 use App\Models\Game;
 use App\Models\Show;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use LaravelIdea\Helper\App\Models\_IH_User_C;
 use NotificationChannels\Discord\Discord;
 use Str;
 
@@ -24,7 +27,7 @@ class UserService
         $generateToken = app(GenerateToken::class);
         $data = $request->all();
         $discordPrivateChannelId = app(Discord::class)->getPrivateChannel($data['discord_id']);
-        ray($discordPrivateChannelId);
+
         $dto = new UserCreateDTO(
             $data['name'],
             $data['name'] . '@beatriceweb.it',
@@ -74,7 +77,7 @@ class UserService
         $user->update($data);
     }
 
-    public function attachUserGame(int $user_id, int $game_id)
+    public function attachUserGame(int $user_id, int $game_id): Model|Collection|array|User|_IH_User_C|null
     {
         $user = User::find($user_id);
         $game = Game::find($game_id);

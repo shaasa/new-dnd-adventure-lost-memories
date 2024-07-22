@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Game;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -16,7 +17,7 @@ class LoginLinkNotification extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(protected Game $game)
     {
         //
     }
@@ -26,9 +27,9 @@ class LoginLinkNotification extends Notification
         return [DiscordChannel::class];
     }
 
-    public function toDiscord($notifiable): DiscordMessage
+    public function toDiscord(object $notifiable): DiscordMessage
     {
-        $loginLink = $notifiable->generateLoginLink();
+        $loginLink = $notifiable->generateLoginLink($this->game);
 
         $embed = [
             'title' =>'Login Link',

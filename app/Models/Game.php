@@ -42,12 +42,12 @@ class Game extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'users_games_characters');
+        return $this->belongsToMany(User::class, 'users_games_characters')->withPivot('character_id');
     }
 
     public function characters(): BelongsToMany
     {
-        return $this->belongsToMany(Character::class, 'users_games_characters');
+        return $this->belongsToMany(Character::class, 'users_games_characters')->withPivot('user_id');
     }
 
     public function shows(): HasMany

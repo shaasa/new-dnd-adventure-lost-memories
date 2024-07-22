@@ -3,7 +3,7 @@
     use App\Models\Show;
     $user = auth()->user();
     $isAdmin = $user->is_admin;
-    $game = Game::findOrFail($player->game_id);
+
     $shows = Show::where('user_id',$user->id)->where('game_id', $game->id)->get();
     $s = [];
     foreach ($shows as $show){
@@ -25,9 +25,9 @@
     </x-slot>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const playerId = '{{ $player->id }}';
+            const playerId = '{{ $user->id }}';
             const gameId = '{{ $game->id }}';
-            const userSpells = '{{ $user->spells }}' == 1;
+            const userSpells = '{{ $user->spells }}' === 1;
 
             console.log('Subscribing to player channel: App.Models.Player.'+playerId);
             console.log('Joining game channel: App.Models.Game.${gameId}');
@@ -78,7 +78,7 @@
 
         /*document.addEventListener('DOMContentLoaded', function () {
 
-            Echo.channel('App.Models.Player.{{ $player->id }}')
+            Echo.channel('App.Models.Player.{{ $user->id }}')
                 .listen('ToggleCharacterSheet', (e) => {
                     if (e.show) {
                         if (e.sheetPart === 'spell') {
@@ -115,7 +115,7 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4">
                     <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        {{$player->user->name}}
+                        {{$user->name}}
                     </h2>
                 </div>
                 <div class="image-container bg-gray-800 shadow-xl rounded-lg mb-12 p-12 clear-both">

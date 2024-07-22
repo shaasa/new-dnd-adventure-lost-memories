@@ -27,6 +27,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property string $name
  * @property string $email
  * @property string $password
+ * @property string $token
  * @property string $remember_token
  * @property boolean $is_admin
  * @property Carbon $email_verified_at
@@ -81,18 +82,30 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'token',
         'discord_name',
         'discord_id',
         'discord_private_channel_id',
         'is_admin',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
     protected $hidden = [
         'password',
         'remember_token',
+        'token'
     ];
 
-    public function scopeForGame(Builder $query, $gameId): Builder
+    public function scopeInGame(Builder $query, $gameId): Builder
     {
         return $query->whereHas('games', function ($q) use ($gameId) {
             $q->where('games.id', $gameId);
@@ -116,25 +129,14 @@ class User extends Authenticatable
         return $query->where('is_admin', 1);
     }
 
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
     public function games(): BelongsToMany
     {
-        return $this->belongsToMany(Game::class, 'users_games_characters');
+        return $this->belongsToMany(Game::class, 'users_games_characters')->withPivot('character_id');
     }
 
     public function characters(): BelongsToMany
     {
-        return $this->belongsToMany(Character::class, 'users_games_characters');
+        return $this->belongsToMany(Character::class, 'users_games_characters')->withPivot('game_id');
     }
 
     public function shows(): HasMany
@@ -161,14 +163,9 @@ class User extends Authenticatable
 
     }
 
-    public function generateLoginLink(): string
+    public function generateLoginLink(Game $game): string
     {
-        return URL::temporarySignedRoute('verify-login', now()->addDay(2), ['token' => $this->token]);
-    }
-
-    public function sendLoginLink()
-    {
-
+        return URL::temporarySignedRoute('verify-login', now()->addDay(2), ['token' => $this->token, 'game' => $game]);
     }
 
 }

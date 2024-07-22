@@ -27,7 +27,7 @@ class UserCreateRequest extends FormRequest
             [
                 'name' => 'string|required|max:255',
                 'game_id' => 'nullable|integer|exists:games,id', // 'character_id' => 'integer|exists:characters,id
-                'discord_id' => 'required|integer',
+                'discord_id' => 'required|integer|unique:App\Models\User,discord_id',
                 'discord_name' => 'required|string|max:255',
                 'is_admin' => 'nullable|boolean',
             ]

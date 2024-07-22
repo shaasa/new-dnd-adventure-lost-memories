@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Character
- * 
+ *
  * @property int $id
  * @property string $name
  * @property bool $mandatory
@@ -24,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property bool $spells
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Collection|Game[] $games
  * @property Collection|User[] $users
  *
@@ -53,14 +53,12 @@ class Character extends Model
 	public function games(): BelongsToMany
     {
 		return $this->belongsToMany(Game::class, 'users_games_characters')
-					->withPivot('user_id')
-					->withTimestamps();
+					->withPivot('user_id');
 	}
 
 	public function users(): BelongsToMany
     {
 		return $this->belongsToMany(User::class, 'users_games_characters')
-					->withPivot('game_id')
-					->withTimestamps();
+					->withPivot('game_id');
 	}
 }

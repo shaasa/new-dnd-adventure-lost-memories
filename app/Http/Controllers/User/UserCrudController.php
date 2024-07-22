@@ -36,7 +36,7 @@ class UserCrudController extends Controller
 
         $service->create($request);
         $gameId = $request->get('game_id');
-        $players = User::forGame($gameId)->get();
+        $players = User::inGame($gameId)->get();
         $users =  User::isPlayer()->notInGame($gameId)->get();
 
         return view('game', ['game' => Game::find($gameId), 'players' => $players, 'users' => $users]);

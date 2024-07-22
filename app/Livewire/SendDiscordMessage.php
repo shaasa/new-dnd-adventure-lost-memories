@@ -17,6 +17,8 @@ class SendDiscordMessage extends ModalComponent
     public function send(): void
     {
         $this->form->send($this->player);
+        $this->dispatch('closeModal');
+        $this->dispatch('messageSent');
     }
 
     public function render(): Factory|Application|View|\Illuminate\Contracts\Foundation\Application
