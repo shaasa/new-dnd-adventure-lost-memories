@@ -38,6 +38,10 @@ class Game extends Model
     use HasFactory, Notifiable;
 
     protected $table = 'games';
+    protected $casts = [
+        'players_count' => 'int',
+        'id' => 'int',
+    ];
     protected $fillable = ['players_count', 'status', 'name'];
 
     public function users(): BelongsToMany
