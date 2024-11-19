@@ -9,12 +9,8 @@
 
 ## About this app
 
-You can watch a short video in Italian here:
+You can watch a short video in Italian [here](https://youtu.be/Ge92hipHCwA).
 
-<video width="800" height="450" controls>
-  <source src="Panoramica_app_D-D_avventura.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
 
 ## About Laravel
 
