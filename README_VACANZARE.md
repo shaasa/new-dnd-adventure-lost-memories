@@ -25,7 +25,8 @@ DISCORD_TOKEN=MTIzNTcwMjU1MTIyMzk5MjM5Mg.GqOxs4.c1wXoJqcUTDD65zho0wyNM2WmL32Nan9
 DISCORD_APPLICATION_ID=1235702551223992392
 DISCORD_PUBLIC_KEY=f06d2752800024aa7d44ba00815c9a47f995cf0f3b8fc50eef9767862dffd63d
 ```
-## Parametri Reverb 
+## Parametri Reverbe
+**No more Reverb: it wants too many ram than I have, now I use PUSHER**
 ```
 REVERB_APP_ID=vacanzare
 REVERB_APP_KEY=dedadventure
