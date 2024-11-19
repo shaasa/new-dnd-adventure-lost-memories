@@ -7,6 +7,15 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## About this app
+
+You can watch a short video in Italian here:
+
+<video width="800" height="450" controls>
+  <source src="Panoramica_app_D-D_avventura.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

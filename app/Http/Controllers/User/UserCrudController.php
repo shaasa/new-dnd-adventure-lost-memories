@@ -8,22 +8,15 @@ use App\Domains\User\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\Models\Game;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class UserCrudController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-
-    }
-
-
-    /**
+        /**
      * Show the form for creating a new resource.
      */
-    public function create(UserCreateRequest $request, UserService $service)
+    public function create(UserCreateRequest $request, UserService $service): RedirectResponse
     {
         return redirect()->route('user.page');
     }
@@ -34,12 +27,13 @@ class UserCrudController extends Controller
     public function store(UserCreateRequest $request, UserService $service)
     {
 
+        $user = Auth::user();
         $service->create($request);
         $gameId = $request->get('game_id');
         $players = User::inGame($gameId)->get();
         $users =  User::isPlayer()->notInGame($gameId)->get();
-
-        return view('game', ['game' => Game::find($gameId), 'players' => $players, 'users' => $users]);
+        $authToken = $user?->createToken('authToken')->plainTextToken;
+        return view('game', ['game' => Game::find($gameId), 'players' => $players, 'users' => $users, 'authToken' => $authToken]);
     }
 
     /**
@@ -61,7 +55,7 @@ class UserCrudController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserUpdateRequest $request,User $user, UserService $service)
+    public function update(UserUpdateRequest $request,User $user, UserService $service): void
     {
         $service->update($request, $user);
     }
@@ -69,8 +63,8 @@ class UserCrudController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): void
     {
-        User::find($id)->delete();
+        User::find($id)?->delete();
     }
 }
