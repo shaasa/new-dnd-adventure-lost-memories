@@ -6,23 +6,13 @@
 
 import axios from 'axios';
 window.axios = axios;
-
+console.log('APP_URL:', import.meta.env.APP_URL);
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.baseURL = import.meta.env.APP_URL;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;  // Se hai bisogno di inviare cookie con la richiesta
 
-/*axios.get('/broadcasting/auth', {
-    headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('authToken')
-    }
-})
-    .then(response => {
-        console.log('Auth response:', response);
-    })
-    .catch(error => {
-        console.log('Auth error:', error);
-    });*/
+
 
 
 /**
@@ -32,10 +22,11 @@ axios.defaults.withCredentials = true;  // Se hai bisogno di inviare cookie con 
  */
 
 import Echo from 'laravel-echo';
-
 import Pusher from 'pusher-js';
+
 window.Pusher = Pusher;
 const token = localStorage.getItem('authToken');
+console.log('Auth Token:', token);
 window.Echo =  new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.PUSHER_APP_KEY,
@@ -49,3 +40,5 @@ window.Echo =  new Echo({
 
 });
 
+// Debug finale
+console.log('Echo configurato:', window.Echo);
