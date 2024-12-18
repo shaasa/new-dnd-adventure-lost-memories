@@ -6,8 +6,6 @@
 
 import axios from 'axios';
 window.axios = axios;
-console.log('APP_URL:', import.meta.env.VITE_APP_URL);
-console.log('PUSHER_APP_KEY:', import.meta.env.VITE_PUSHER_APP_KEY || 'pippo');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.baseURL = import.meta.env.VITE_APP_URL;
@@ -25,7 +23,6 @@ import Pusher from 'pusher-js';
 
 window.Pusher = Pusher;
 const token = localStorage.getItem('authToken');
-console.log('Auth Token:', token);
 window.Echo =  new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
@@ -39,5 +36,4 @@ window.Echo =  new Echo({
 
 });
 
-// Debug finale
-console.log('Echo configurato:', window.Echo);
+
