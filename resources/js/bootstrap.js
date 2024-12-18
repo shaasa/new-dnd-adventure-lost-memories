@@ -7,6 +7,8 @@
 import axios from 'axios';
 window.axios = axios;
 console.log('APP_URL:', import.meta.env.APP_URL);
+console.log('PUSHER_APP_KEY:', import.meta.env.PUSHER_APP_KEY || 'pippo');
+
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.baseURL = import.meta.env.APP_URL;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
