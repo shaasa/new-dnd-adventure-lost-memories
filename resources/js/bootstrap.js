@@ -6,11 +6,11 @@
 
 import axios from 'axios';
 window.axios = axios;
-console.log('APP_URL:', import.meta.env.APP_URL);
-console.log('PUSHER_APP_KEY:', import.meta.env.PUSHER_APP_KEY || 'pippo');
+console.log('APP_URL:', import.meta.env.VITE_APP_URL);
+console.log('PUSHER_APP_KEY:', import.meta.env.VITE_PUSHER_APP_KEY || 'pippo');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.baseURL = import.meta.env.APP_URL;
+axios.defaults.baseURL = import.meta.env.VITE_APP_URL;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;  // Se hai bisogno di inviare cookie con la richiesta
 
@@ -28,8 +28,8 @@ const token = localStorage.getItem('authToken');
 console.log('Auth Token:', token);
 window.Echo =  new Echo({
     broadcaster: 'pusher',
-    key: import.meta.env.PUSHER_APP_KEY,
-    cluster: import.meta.env.PUSHER_APP_CLUSTER,
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     forceTLS: true,
     auth: {
         headers: {
