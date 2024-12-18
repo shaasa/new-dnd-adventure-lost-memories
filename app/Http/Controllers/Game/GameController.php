@@ -7,7 +7,6 @@ use App\Domains\User\Actions\GamePageAttributes;
 use App\Enums\GameStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Game;
-use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

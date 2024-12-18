@@ -8,7 +8,7 @@ import axios from 'axios';
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.baseURL = 'https://vacanzare.com.test:5173';
+axios.defaults.baseURL = import.meta.env.APP_URL;
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;  // Se hai bisogno di inviare cookie con la richiesta
 
@@ -31,5 +31,21 @@ axios.defaults.withCredentials = true;  // Se hai bisogno di inviare cookie con 
  * allow your team to quickly build robust real-time web applications.
  */
 
-import './echo';
+import Echo from 'laravel-echo';
+
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
+const token = localStorage.getItem('authToken');
+window.Echo =  new Echo({
+    broadcaster: 'pusher',
+    key: import.meta.env.PUSHER_APP_KEY,
+    cluster: import.meta.env.PUSHER_APP_CLUSTER,
+    forceTLS: true,
+    auth: {
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    }
+
+});
 
