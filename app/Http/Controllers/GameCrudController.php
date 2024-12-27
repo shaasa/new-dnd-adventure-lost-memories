@@ -23,15 +23,13 @@ class GameCrudController extends Controller
     {
         $data = $request->validate([
             'name' => 'string|required|max:255',
-            'players_count' =>  'integer|min:1',
-            'status' =>  [Rule::enum(GameStatusEnum::class)]
+            'players_count' => 'integer|min:1',
+            'status' => [Rule::enum(GameStatusEnum::class)]
         ]);
 
-        try {
-            Game::create($data);
-        }catch (\Exception $exception){
-            ray($exception->getMessage());
-        }
+
+        Game::create($data);
+
         return redirect()->route('dashboard');
     }
 
@@ -41,15 +39,12 @@ class GameCrudController extends Controller
         $data = $request->validate([
             'id' => 'integer|exists:games,id',
             'name' => 'string|required|max:255',
-            'players_count' =>  'integer|min:1',
-            'status' =>  [Rule::enum(GameStatusEnum::class)]
+            'players_count' => 'integer|min:1',
+            'status' => [Rule::enum(GameStatusEnum::class)]
         ]);
 
-        try {
-            Game::upsert($data,'id');
-        }catch (\Exception $exception){
-            ray($exception->getMessage());
-        }
+        Game::upsert($data, 'id');
+
         return redirect()->route('dashboard');
     }
 }

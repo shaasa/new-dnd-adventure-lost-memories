@@ -22,7 +22,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('App.Models.Game.{gameId}', function ($user, $gameId) {
     Log::info("Attempting to authorize channel for Game ID: {$gameId}, User ID: {$user->id}");
     if (!$user) {
-        ray($user);
         return false;
     }
     try {
@@ -30,7 +29,6 @@ Broadcast::channel('App.Models.Game.{gameId}', function ($user, $gameId) {
             return ['id' => $user->id, 'name' => $user->name, 'gameId' => $gameId, 'is_admin' => $user->is_admin];
         }
     } catch (\Exception $e) {
-        ray($e->getMessage());
         Log::error('Errore nell\'autorizzazione del canale: ' . $e->getMessage());
     }
     return false;

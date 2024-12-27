@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\User;
 
 
-
 use App\Domains\User\Actions\GenerateToken;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Game\GameController;
@@ -11,7 +10,6 @@ use App\Models\Game;
 use App\Models\User;
 use App\Notifications\LoginLinkNotification;
 use Illuminate\Http\RedirectResponse;
-
 
 
 class UserLoginController extends Controller
@@ -27,18 +25,16 @@ class UserLoginController extends Controller
         return redirect()->route('game.page', ['user' => $user, 'game' => $game->id]);
     }
 
-    public function sendToken(User $user, Game $game,)
+    public function sendToken(User $user, Game $game)
     {
-        try {
-            $user = $this->updateToken($user);
-            $user->notify(new LoginLinkNotification($game));
-        }catch (\Throwable $exception){
-            ray($exception->getMessage());
-        }
+
+        $user = $this->updateToken($user);
+        $user->notify(new LoginLinkNotification($game));
+
         return app(GameController::class)->page($game);
     }
 
-    protected  function updateToken(User $user): User
+    protected function updateToken(User $user): User
     {
         $token = $this->generateToken->execute();
         $user->update(['token' => $token]);

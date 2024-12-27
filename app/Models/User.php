@@ -21,7 +21,6 @@ use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\PersonalAccessToken;
 
 /**
- * Fattura_elettronica_natura Entity class
  *
  * @property int $id
  * @property string $name

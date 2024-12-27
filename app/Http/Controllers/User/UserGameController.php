@@ -32,9 +32,9 @@ class UserGameController extends Controller
                         ->where('type', $fase->value)
                         ->first();
 
-            ray($show);
+            //ray($show);
             $toggle = !$show?->show;
-            ray($toggle);
+            //ray($toggle);
             $show?->update(['show' => $toggle]);
             ToggleCharacterSheet::dispatch($user, $fase, $toggle);
 
@@ -55,6 +55,9 @@ class UserGameController extends Controller
         $data = $request->all();
         $player = $service->attachUserGame($data['user_id'], $data['game_id']);
         $game = Game::find($data['game_id']);
+        if(null === $game){
+            throw new \Exception('Game not found');
+        }
         return app(GameController::class)->page($game);
     }
 

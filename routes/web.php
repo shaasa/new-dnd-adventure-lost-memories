@@ -44,7 +44,7 @@ Route::get('dashboard', [DashboardController::class, 'dashboard'])
 //Dashboard player
 Route::get('dashboard-player/{game}', [DashboardController::class, 'dashboardPlayer'])
      ->middleware(['auth', 'verified'])
-     ->name('dashboard-player');
+     ->name('dashboard.player');
 
 Route::view('profile', 'profile')
      ->middleware(['auth'])

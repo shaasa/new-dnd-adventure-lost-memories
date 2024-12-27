@@ -31,11 +31,7 @@ class GameController extends Controller
             'status' =>  [Rule::enum(GameStatusEnum::class)]
         ]);
 
-        try {
-            Game::create($data);
-        }catch (\Exception $exception){
-            ray($exception->getMessage());
-        }
+        Game::create($data);
         return redirect()->route('dashboard');
     }
 
@@ -57,11 +53,7 @@ class GameController extends Controller
             'status' =>  [Rule::enum(GameStatusEnum::class)]
         ]);
 
-        try {
-            Game::upsert($data,'id');
-        }catch (\Exception $exception){
-            ray($exception->getMessage());
-        }
+        Game::upsert($data,'id');
         return redirect()->route('dashboard');
     }
 }
