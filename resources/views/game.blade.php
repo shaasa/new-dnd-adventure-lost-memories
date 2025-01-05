@@ -199,7 +199,7 @@
 
 
                     <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">
-                        <form action="{{route('game.update', ['game_id'=>$game->id])}}" method="post">
+                        <form action="{{route('game.update', ['game_id'=>$game->id])}}" method="POST">
                             <input type="hidden" name="id" value="{{$game->id}}">
                             @csrf
                             <div class="form-group">

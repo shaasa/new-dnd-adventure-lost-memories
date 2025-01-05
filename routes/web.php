@@ -56,7 +56,7 @@ Route::get('verify-login/{token}/{game}', [AuthController::class, 'verifyLogin']
 
 Route::prefix('admin')->middleware(['auth.admin', 'verified'])->group(function () {
     Route::post('/game/insert', [GameController::class, 'store'])->name('game.insert');
-    Route::put('/game/{game_id}/update', [GameController::class, 'update'])->name('game.update');
+    Route::post('/game/{game_id}/update', [GameController::class, 'update'])->name('game.update');
     Route::get('/game/{game}', [GameController::class, 'page'])->name('game.page');
 
     Route::resource('player', UserCrudController::class);
