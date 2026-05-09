@@ -17,6 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.claude
 
 # Laravel 4 specific
 bootstrap/compiled.php
@@ -32,6 +33,5 @@ public_html/hot
 
 storage/*.key
 /.vagrant
-ray.php
 ngrok.exe
 
