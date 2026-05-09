@@ -6,49 +6,9 @@
     </x-slot>
     <script>
         document.addEventListener('livewire:initialized', () => {
-            Livewire.on('messageSent', (event) => {
-                // Mostra un messaggio di conferma
+            Livewire.on('messageSent', () => {
                 alert('Messaggio inviato con successo!');
             });
-        });
-        const token = '{{ $authToken }}';
-        localStorage.setItem('authToken', token);
-        document.addEventListener('DOMContentLoaded', function (callback) {
-
-            Echo.join('App.Models.Game.{{$game->id}}')
-                .here((user) => {
-                    user.forEach((user) => {
-                        if (!user.is_admin) {
-                            const element = document.getElementById('player' + user.id);
-                            if (element) {
-                                element.style.color = 'green'; // cambia questo al colore che vuoi
-                            }
-                        }
-                    })
-                })
-                .joining((user) => {
-                    if (user.id !== 'admin') {
-                        const element = document.getElementById('player' + user.id);
-                        if (element) {
-                            element.style.color = 'green'; // cambia questo al colore che vuoi
-                        }
-                    }
-                })
-                .leaving((user) => {
-                    if (user.id !== 'admin') {
-                        const element = document.getElementById('player' + user.id);
-                        if (element) {
-                            element.style.color = 'grey'; // cambia questo al colore che vuoi
-                        }
-                    }
-                })
-                .listen('NewMessage', (e) => {
-                    console.log('NewMessage event received:', e);
-                })
-                .error((error) => {
-                    console.log(error);
-                });
-
         });
     </script>
     <div class="py-12">

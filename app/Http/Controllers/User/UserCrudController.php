@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Game;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 
 class UserCrudController extends Controller
 {
@@ -27,13 +26,11 @@ class UserCrudController extends Controller
     public function store(UserCreateRequest $request, UserService $service)
     {
 
-        $user = Auth::user();
         $service->create($request);
         $gameId = $request->get('game_id');
         $players = User::inGame($gameId)->get();
-        $users =  User::isPlayer()->notInGame($gameId)->get();
-        $authToken = $user?->createToken('authToken')->plainTextToken;
-        return view('game', ['game' => Game::find($gameId), 'players' => $players, 'users' => $users, 'authToken' => $authToken]);
+        $users = User::isPlayer()->notInGame($gameId)->get();
+        return view('game', ['game' => Game::find($gameId), 'players' => $players, 'users' => $users]);
     }
 
     /**

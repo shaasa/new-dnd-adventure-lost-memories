@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BoardStreamController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Game\GameController;
 use App\Http\Controllers\ImageController;
@@ -10,30 +11,11 @@ use App\Http\Controllers\User\UserDiscordController;
 use App\Http\Controllers\User\UserGameController;
 use App\Http\Controllers\User\UserLoginController;
 use App\Http\Controllers\WelcomeController;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['web', 'auth'])->group(function () {
-    Broadcast::routes();
-});
-
-Route::get('/broadcasting/auth', function (Request $request) {
-    $user = Auth::user();
-    Log::info('Broadcasting auth route');
-    if ($user) {
-        $response =
-            [
-                'id' => $user->id,
-                'user_info' => [
-                    'name' => $user->name,
-                ]
-            ];
-        return new JsonResponse($response);
-    }
-
-    return new JsonResponse([], 403);
-})->middleware(['auth'])->name('broadcast.auth');
+Route::get('/board/stream/{game}', [BoardStreamController::class, 'stream'])
+     ->middleware(['auth', 'verified'])
+     ->name('board.stream');
 
 Route::get('/', [WelcomeController::class, 'gamesList'])->name('welcome');
 //Dashboard admin

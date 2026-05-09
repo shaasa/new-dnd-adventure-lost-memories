@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php -l /Users/beatrice.bartoli/Herd/vacanzare.com/app/Http/Controllers/BoardStreamController.php)",
+      "Bash(php -l /Users/beatrice.bartoli/Herd/vacanzare.com/app/Http/Controllers/User/UserGameController.php)",
+      "Bash(php -l /Users/beatrice.bartoli/Herd/vacanzare.com/app/Http/Controllers/Game/GameController.php)",
+      "Bash(php -l /Users/beatrice.bartoli/Herd/vacanzare.com/app/Http/Controllers/User/UserCrudController.php)",
+      "Bash(mysql *)",
+      "Bash(curl -s http://vacanzare.com.test/login)",
+      "Bash(herd php -r ' *)",
+      "Bash(php artisan tinker '--execute= *)",
+      "Bash(herd php artisan tinker '--execute= *)",
+      "Bash(curl -s -L -c /tmp/player_cookies.txt -o /tmp/player_after_login.html -w '%{http_code}' 'http://vacanzare.com.test/verify-login/ebd3a9f63ea0c7488e7dff434bf5f23a9856ee4d1643b592b967fb541047ec7c/1?expires=1778498766&signature=9bd6e3588e97da27900e1e673e80974c14cccdd33edf324e246866a98f2f8369')",
+      "Read(//tmp/**)",
+      "Bash(herd php *)",
+      "Bash(curl -s -c /tmp/player_cookies.txt -o /tmp/player_after_login.html -w '%{http_code}' 'http://vacanzare.com.test/verify-login/ebd3a9f63ea0c7488e7dff434bf5f23a9856ee4d1643b592b967fb541047ec7c/1?expires=1778498803&signature=1daca1828d9aa45fd7cc4e65aae37637f54128b1b3ad7f6920eb246a3f2b0c54')",
+      "Bash(curl -s -L -b /tmp/player_cookies.txt -c /tmp/player_cookies.txt -o /tmp/player_dashboard.html http://vacanzare.com.test/dashboard-player/1)",
+      "Bash(curl *)",
+      "Bash(composer update *)",
+      "Bash(composer remove *)",
+      "Bash(grep -v \"^$\")",
+      "Bash(git *)",
+      "Bash(php artisan *)",
+      "Bash(grep -v \"^Deprecated\\\\|^$\")",
+      "Bash(composer install *)",
+      "Bash(npm outdated *)",
+      "Bash(npm info *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(node *)"
+    ]
+  }
+}

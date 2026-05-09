@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Console\Command;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,6 +16,12 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->isLocal()) {
             $this->app->register(IdeHelperServiceProvider::class);
         }
+
+        // Workaround: PHP 8.5 + Laravel 12 - comandi risolti via ContainerCommandLoader
+        // non ricevono setLaravel() automaticamente; questo callback lo garantisce.
+        $this->app->resolving(Command::class, function (Command $command) {
+            $command->setLaravel($this->app);
+        });
     }
 
     /**
@@ -25,8 +29,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('viewPulse', function (User $user) {
-            return $user->isAdmin();
-        });
     }
 }

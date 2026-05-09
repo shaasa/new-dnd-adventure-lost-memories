@@ -17,8 +17,6 @@ use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
-use Laravel\Sanctum\HasApiTokens;
-use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  *
@@ -39,8 +37,6 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property-read int|null $notifications_count
  * @property-read Collection<int, Show> $shows
  * @property-read int|null $shows_count
- * @property-read Collection<int, PersonalAccessToken> $tokens
- * @property-read int|null $tokens_count
  * @method static UserFactory factory($count = null, $state = [])
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -63,7 +59,7 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     /**
      * The database table used by the model.

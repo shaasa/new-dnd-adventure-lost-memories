@@ -6,7 +6,6 @@ namespace App\Http\Controllers\User;
 use App\Domains\User\Requests\UserGameRequest;
 use App\Domains\User\Services\UserService;
 use App\Enums\TypeEnum;
-use App\Events\ToggleCharacterSheet;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Game\GameController;
 use App\Models\Game;
@@ -25,29 +24,14 @@ class UserGameController extends Controller
 
     public function toggle(User $user, TypeEnum $fase, Game $game): RedirectResponse
     {
+        $show = Show::where('game_id', $game->id)
+                    ->where('user_id', $user->id)
+                    ->where('type', $fase->value)
+                    ->first();
 
-        try {
-            $show = Show::where('game_id', $game->id)
-                        ->where('user_id', $user->id)
-                        ->where('type', $fase->value)
-                        ->first();
+        $show?->update(['show' => !$show->show]);
 
-            //ray($show);
-            $toggle = !$show?->show;
-            //ray($toggle);
-            $show?->update(['show' => $toggle]);
-            ToggleCharacterSheet::dispatch($user, $fase, $toggle);
-
-            return redirect()->route('game.page', ['game' => $game->id]);
-        } catch (\Exception $e) {
-            // Log the error
-            \Log::error('Error dispatching event: ' . $e->getMessage());
-
-            // Optionally, return an error response
-            return redirect()->route('game.page', ['game' => $game->id]);
-        }
-
-
+        return redirect()->route('game.page', ['game' => $game->id]);
     }
 
     public function attachUserGame(UserGameRequest $request, UserService $service)

@@ -26,51 +26,31 @@
         </h2>
     </x-slot>
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
-            const userId = '{{ $user->id }}';
-            const gameId = '{{ $game->id }}';
             const userSpells = {{ $character->spells ? 'true' : 'false' }};
+            const source = new EventSource('{{ route('board.stream', ['game' => $game->id]) }}');
 
-            Echo.channel(`App.Models.User.${userId}`)
-
-                .listen('ToggleCharacterSheet', (e) => {
-                    console.log('ToggleCharacterSheet event received:', e);
-                    const element = document.getElementById(e.sheetPart);
-                    const tuttaElement = document.getElementById('tutta');
-
-                    if (e.sheetPart === 'spell') {
+            source.onmessage = function (e) {
+                const shows = JSON.parse(e.data);
+                shows.forEach(function (show) {
+                    if (show.type === 'spell') {
                         if (userSpells) {
-                            element.style.display = e.show ? 'block' : 'none';
+                            const spellEl = document.getElementById('spell');
+                            if (spellEl) spellEl.style.display = show.show ? 'block' : 'none';
                         }
-                        tuttaElement.style.display = e.show ? 'block' : 'none';
+                        const tuttaEl = document.getElementById('tutta');
+                        if (tuttaEl) tuttaEl.style.display = show.show ? 'block' : 'none';
                     } else {
-                        element.style.display = e.show ? 'block' : 'none';
+                        const el = document.getElementById(show.type);
+                        if (el) el.style.display = show.show ? 'block' : 'none';
                     }
-                })
-                .error((error) => {
-                    console.error(`Error subscribing to user channel: App.Models.User.${userId}`, error);
                 });
+            };
 
-            Echo.join(`App.Models.Game.${gameId}`)
-                .here((users) => {
-                    console.log('Users already in the channel:', users);
-                })
-                .joining((user) => {
-                    console.log('User joined:', user);
-                })
-                .leaving((user) => {
-                    console.log('User left:', user);
-                })
-                .error((error) => {
-                    console.error(`Error joining game channel: App.Models.Game.${gameId}`, error);
-                })
-                .listen('NewMessage', (e) => {
-                    console.log('NewMessage event received:', e);
-                });
+            source.onerror = function () {
+                console.warn('SSE: connessione persa, il browser ritenterà automaticamente.');
+            };
         });
-
-
     </script>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
