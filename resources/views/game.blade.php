@@ -61,13 +61,13 @@
 
                                         <a href="{{route('player.send-token', ['user' => $player->id, 'game'=>$game->id])}}"
                                            class="float-left"> {{ svg('fas-link', 'size-5 sm:size-6 ml-4', ) }}</a>
-                                        <a href="{{route('player.show', ['user' => $player->id, 'fase' => 'equipment', 'game'=>$game->id])}}"
+                                        <a href="{{route('player.toggle', ['user' => $player->id, 'fase' => 'equipment', 'game'=>$game->id])}}"
                                            class="float-left"> {{ svg('phosphor-sword-bold', 'size-5 sm:size-6 ml-4', $s['equipment']) }}</a>
-                                        <a href="{{route('player.show', ['user' => $player->id, 'fase' => 'characteristic', 'game'=>$game->id])}}"
+                                        <a href="{{route('player.toggle', ['user' => $player->id, 'fase' => 'characteristic', 'game'=>$game->id])}}"
                                            class="float-left"> {{ svg('fas-person', 'size-5 sm:size-6 ml-4',$s['characteristic'] ) }}</a>
-                                        <a href="{{route('player.show', ['user' => $player->id, 'fase' => 'skill', 'game'=>$game->id])}}"
+                                        <a href="{{route('player.toggle', ['user' => $player->id, 'fase' => 'skill', 'game'=>$game->id])}}"
                                            class="float-left"> {{ svg('fas-dice-d20', 'size-5 sm:size-6 ml-4',$s['skill'] ) }}</a>
-                                        <a href="{{route('player.show', ['user' => $player->id, 'fase' => 'spell', 'game'=>$game->id])}}"
+                                        <a href="{{route('player.toggle', ['user' => $player->id, 'fase' => 'spell', 'game'=>$game->id])}}"
                                            class="float-left"> {{ svg('fas-book-bookmark', 'size-5 sm:size-6 ml-4', $s['spell']) }}</a>
                                     </td>
                                 </tr>
