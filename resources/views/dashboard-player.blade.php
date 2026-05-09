@@ -28,10 +28,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const userSpells = {{ $character->spells ? 'true' : 'false' }};
-            const source = new EventSource('{{ route('board.stream', ['game' => $game->id]) }}');
+            const url = '{{ route('board.stream', ['game' => $game->id]) }}';
 
-            source.onmessage = function (e) {
-                const shows = JSON.parse(e.data);
+            function applyShows(shows) {
                 shows.forEach(function (show) {
                     if (show.type === 'spell') {
                         if (userSpells) {
@@ -45,11 +44,19 @@
                         if (el) el.style.display = show.show ? 'block' : 'none';
                     }
                 });
-            };
+            }
 
-            source.onerror = function () {
-                console.warn('SSE: connessione persa, il browser ritenterà automaticamente.');
-            };
+            function poll() {
+                fetch(url, {
+                    headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(function (r) { return r.json(); })
+                .then(applyShows)
+                .catch(function () {});
+            }
+
+            poll();
+            setInterval(poll, 4000);
         });
     </script>
     <div class="py-12">

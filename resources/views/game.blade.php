@@ -36,17 +36,10 @@
                             <tbody>
                             @foreach($players as $player)
                                 @php
-
-                                        $character = $player->characters()->wherePivot('game_id',$game->id)->first();
-                                        foreach ($player->characters as $ch){
-                                        $character = $ch;
-                                        break;
-                                        }
-                                        $shows = \App\Models\Show::where('user_id',$player->id)->where('game_id', $game->id)->get();
+                                        $character = $player->characters->first();
                                         $s = [];
-                                        foreach ($shows as $show){
-                                            $color = $show->show ? ['style'=>'color:green'] :[];
-                                            $s[$show->type] = $color;
+                                        foreach ($player->shows as $show) {
+                                            $s[$show->type] = $show->show ? ['style'=>'color:green'] : [];
                                         }
                                 @endphp
                                 <tr class="text-center bg-gray-700 hover:bg-gray-600">
@@ -82,7 +75,7 @@
                             </tbody>
                         </table>
                     @endif
-                    @if($game->users->count() < $game->players_count)
+                    @if($players->count() < $game->players_count)
 
 
                         <div class="bg-gray-800 shadow-xl rounded-lg mt-6 p-6">

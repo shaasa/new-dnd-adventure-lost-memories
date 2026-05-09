@@ -11,7 +11,9 @@ class GamePageAttributes
 {
     public function execute(int $gameId): array
     {
-        $players = User::inGame($gameId)->get();
+        $players = User::inGame($gameId)
+            ->with(['shows' => fn($q) => $q->where('game_id', $gameId)])
+            ->get();
         $users = User::isPlayer()->notInGame($gameId)->get();
         return [ $players, $users];
     }
