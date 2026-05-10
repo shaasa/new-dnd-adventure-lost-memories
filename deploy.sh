@@ -31,4 +31,7 @@ $PHP artisan view:cache
 echo "==> Migrazioni..."
 $PHP artisan migrate --force
 
+echo "==> Restart PHP-FPM (svuota OPcache)..."
+systemctl restart plesk-php85-fpm.service
+
 echo "==> Deploy completato!"
