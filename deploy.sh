@@ -25,7 +25,7 @@ $PHP artisan cache:clear
 $PHP artisan view:clear
 $PHP artisan package:discover
 $PHP artisan config:cache
-$PHP artisan route:cache
+$PHP artisan route:clear
 $PHP artisan view:cache
 
 echo "==> Migrazioni..."
