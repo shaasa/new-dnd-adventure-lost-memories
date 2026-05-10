@@ -1,5 +1,8 @@
 <?php
 
+// Sopprime E_DEPRECATED da vendor (es. PDO::MYSQL_ATTR_SSL_CA su PHP 8.5)
+error_reporting(error_reporting() & ~E_DEPRECATED);
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application

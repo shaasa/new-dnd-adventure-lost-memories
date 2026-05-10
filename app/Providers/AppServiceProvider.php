@@ -29,6 +29,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        error_reporting(error_reporting() & ~E_DEPRECATED);
     }
 }

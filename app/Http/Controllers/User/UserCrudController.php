@@ -36,25 +36,18 @@ class UserCrudController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): ?User
+    public function show(User $player)
     {
-        return User::find($id);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        return User::find($id);
+        return view('players.show', compact('player'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserUpdateRequest $request,User $user, UserService $service): void
+    public function update(UserUpdateRequest $request, User $player, UserService $service): RedirectResponse
     {
-        $service->update($request, $user);
+        $service->update($request, $player);
+        return redirect()->route('player.show', $player->id)->with('success', 'Dati aggiornati.');
     }
 
     /**

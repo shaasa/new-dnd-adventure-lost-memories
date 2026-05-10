@@ -23,13 +23,11 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            [
-                'name' => 'string|required|max:255',
-                'discord_id' => 'required|integer',
-                'discord_name' => 'required|string|max:255',
-                'token' => 'required|string|max:255',
-                'is_admin' => 'required|boolean',
-            ]
+            'name' => 'required|string|max:255',
+            'discord_id' => 'required|string|max:255',
+            'discord_name' => 'required|string|max:255',
+            'discord_private_channel_id' => 'nullable|string|max:255',
+            'is_admin' => 'required|boolean',
         ];
     }
 }

@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://vacanzare.com.test:5173', 'https://vacanzare.com.test', 'https://vacanzare.com'],
+    'allowed_origins' => ['http://vacanzare.com.test:5173', 'http://vacanzare.com.test', 'https://vacanzare.com'],
 
     'allowed_origins_patterns' => [],
 
